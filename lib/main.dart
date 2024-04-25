@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:market_app_web_2/features/categories/presentation/model_views/subcategory/subcategory_cubit.dart';
 import 'core/cubit/sidemenu/side_menu_cubit.dart';
 import 'core/style/theme.dart';
 import 'core/utils/router.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (ctx) => SideMenuCubit()..init()),
         BlocProvider(create: (ctx) => CategoriesCubit(di.sl())),
+        BlocProvider(create: (ctx) => SubCategoryCubit(di.sl())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

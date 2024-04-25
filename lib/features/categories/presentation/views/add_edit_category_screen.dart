@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:market_app_web_2/core/style/app_colors.dart';
 import 'package:market_app_web_2/core/utils/dialog_manager_overlay.dart';
+import 'package:market_app_web_2/core/widgets/divider_widget.dart';
+import 'package:market_app_web_2/features/categories/presentation/model_views/subcategory/subcategory_cubit.dart';
+import 'package:market_app_web_2/features/categories/presentation/views/widgets/sub_category_section.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/text_button_widget.dart';
 import '../../data/models/category_request_model.dart';
@@ -32,16 +35,23 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
   File? pickedImage;
   bool isLoading = false;
 
+  bool hasLoaded = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    category =
-        ModalRoute.of(context)?.settings.arguments as CategoryResponseModel?;
+    if (!hasLoaded) {
+      category =
+          ModalRoute.of(context)?.settings.arguments as CategoryResponseModel?;
 
-    if (category != null) {
-      enNameController.text = category?.enName ?? '';
-      trNameController.text = category?.trName ?? '';
-      arNameController.text = category?.enName ?? '';
+      if (category != null) {
+        enNameController.text = category?.enName ?? '';
+        trNameController.text = category?.trName ?? '';
+        arNameController.text = category?.enName ?? '';
+
+        context.read<SubCategoryCubit>().getSubCategories(category!.id);
+      }
+      hasLoaded = true;
     }
   }
 
@@ -92,51 +102,60 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
             ),
         ],
       ),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 50),
-            EditAddImageWidget(
-              category: category,
-              pickImageFn: pickImage,
-              pickedImage: pickedImage,
-            ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(height: 50),
+          EditAddImageWidget(
+            category: category,
+            pickImageFn: pickImage,
+            pickedImage: pickedImage,
+          ),
+          const SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: TextFormFieldWidget(
+                  label: 'English Name ',
+                  controller: enNameController,
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: TextFormFieldWidget(
+                  label: 'Turkish Name ',
+                  controller: trNameController,
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: TextFormFieldWidget(
+                  label: 'Arabic Name ',
+                  controller: arNameController,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          isLoading
+              ? const LoadingWidget()
+              : AddEditButtonWidget(
+                  category: category,
+                  onTap: onTap,
+                ),
+          if (category != null)
+            Column(
               children: [
-                Expanded(
-                  child: TextFormFieldWidget(
-                    label: 'English Name ',
-                    controller: enNameController,
-                  ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: TextFormFieldWidget(
-                    label: 'Turkish Name ',
-                    controller: trNameController,
-                  ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: TextFormFieldWidget(
-                    label: 'Arabic Name ',
-                    controller: arNameController,
-                  ),
+                const SizedBox(height: 20),
+                const DividerWidget(),
+                const SizedBox(height: 10),
+                SubCategorySection(
+                  categoryId: category!.id,
                 ),
               ],
-            ),
-            const SizedBox(height: 20),
-            isLoading
-                ? const LoadingWidget()
-                : AddEditButtonWidget(
-                    category: category,
-                    onTap: onTap,
-                  ),
-          ],
-        ),
+            )
+        ],
       ),
     );
   }
