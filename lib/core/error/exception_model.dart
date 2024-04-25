@@ -6,7 +6,7 @@ class ExceptionModel extends Equatable {
   const ExceptionModel({required this.message});
 
   factory ExceptionModel.fromJson(Map<String, dynamic> json) {
-    return ExceptionModel(message: json['messages'][0]);
+    return ExceptionModel(message: json['message'][0]);
   }
 
   @override

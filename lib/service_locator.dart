@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:market_app_web_2/features/categories/data/repo/categories_repo.dart';
+import 'package:market_app_web_2/features/categories/data/repo/categories_repo_impl.dart';
 import 'core/services/http_service.dart';
 import 'features/authentication/data/repos/authentication_repo.dart';
 import 'features/authentication/data/repos/authentication_repo_impl.dart';
@@ -15,4 +17,5 @@ Future<void> init() async {
 
   sl.registerLazySingleton<AuthenticatioRepo>(
       () => AuthenticationRepoImpl(sl()));
+  sl.registerLazySingleton<CategoriesRepo>(() => CategoriesRepoImpl(sl()));
 }

@@ -6,30 +6,40 @@ class TextFormFieldWidget extends StatelessWidget {
     super.key,
     this.isPass = false,
     required this.label,
-    required this.prefixIcon,
+    this.prefixIcon,
     this.textInputType,
-    required this.validator,
-    required this.controller,
+    this.validator,
+    this.controller,
+    this.onChanged,
   });
 
   final bool isPass;
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
   final String label;
   final TextInputType? textInputType;
   final String? Function(String?)? validator;
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final void Function(String)? onChanged;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: onChanged,
       controller: controller,
       obscureText: isPass,
       keyboardType: textInputType,
       validator: validator,
       decoration: InputDecoration(
-        prefixIcon: Icon(prefixIcon),
-        label: Text(label),
+        prefixIcon: prefixIcon != null
+            ? Icon(
+                prefixIcon,
+                color: Colors.black,
+              )
+            : null,
+        label: Text(label,
+            style: const TextStyle(fontSize: 16, color: AppColors.black)),
         filled: true,
-        fillColor: AppColors.lightGray,
+        fillColor: Colors.grey.shade200,
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
             borderSide: const BorderSide(color: AppColors.primaryColor)),

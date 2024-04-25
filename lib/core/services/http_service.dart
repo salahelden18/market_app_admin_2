@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:dartz/dartz.dart';
@@ -25,10 +26,12 @@ class HttpService extends HttpServiceInterface {
     bool requireToken = true,
   }) async {
     try {
+      print('Entered here the getting categories');
       final urlParsed = Uri.parse('$url${query != null ? '?$query' : ''}');
-
+      print(urlParsed);
       final requestHeaders = await _buildRequestHeader(headers, requireToken);
 
+      print('Here before sending the request');
       final response = await http
           .get(
         urlParsed,
@@ -39,11 +42,16 @@ class HttpService extends HttpServiceInterface {
             'Sorry, the operation took too long to complete. Please try again!');
       });
 
+      print('After Sending the request');
+      print(response.body);
+      print(response.statusCode);
+
       if (response.statusCode == 204) {
         return right(null);
       }
 
       final decodedResponse = jsonDecode(response.body);
+      print(decodedResponse);
 
       if (response.statusCode > 299) {
         final error = ExceptionModel.fromJson(decodedResponse);
@@ -69,8 +77,6 @@ class HttpService extends HttpServiceInterface {
       bool requireToken = true}) async {
     try {
       final urlParsed = Uri.parse('$url${query != null ? '?$query' : ''}');
-      print(urlParsed);
-      print(body);
 
       final requestHeaders = await _buildRequestHeader(headers, requireToken);
 
@@ -86,8 +92,6 @@ class HttpService extends HttpServiceInterface {
       });
 
       final decodedResponse = jsonDecode(response.body);
-
-      print(decodedResponse);
 
       if (response.statusCode > 299) {
         final error = ExceptionModel.fromJson(decodedResponse);
@@ -146,12 +150,131 @@ class HttpService extends HttpServiceInterface {
     }
   }
 
+  @override
+  Future<Either<HttpFailure, T?>> delete<T>(
+      {required String url,
+      String? query,
+      required T? Function(dynamic p1) fromJson,
+      Map<String, dynamic>? body,
+      Map<String, dynamic> headers = const {},
+      bool requireToken = true}) async {
+    try {
+      final urlParsed = Uri.parse('$url${query != null ? '?$query' : ''}');
+      print(urlParsed);
+
+      final requestHeaders = await _buildRequestHeader(headers, requireToken);
+
+      final response = await http
+          .delete(
+        body: body != null ? json.encode(body) : null,
+        urlParsed,
+        headers: requestHeaders,
+      )
+          .timeout(const Duration(seconds: 60), onTimeout: () {
+        throw TimeoutException(
+            'Sorry, the operation took too long to complete. Please try again!');
+      });
+
+      // here means that it is deleted successfully
+      if (response.statusCode == 204) {
+        return right(null);
+      }
+      final decodedResponse = jsonDecode(response.body);
+
+      print(decodedResponse);
+
+      if (response.statusCode > 299) {
+        final error = ExceptionModel.fromJson(decodedResponse);
+        throw HttpException(error.message);
+      }
+
+      final parsedModel = fromJson(decodedResponse);
+      return right(parsedModel);
+    } catch (error) {
+      print(error);
+      return handleException(error);
+    }
+  }
+
+  @override
+  Future<Either<HttpFailure, T?>> request<T>({
+    required String url,
+    required String method,
+    required T? Function(dynamic p1) fromJson,
+    required Map<String, dynamic> fields,
+  }) async {
+    try {
+      final parsedUrl = Uri.parse(url);
+      final request = http.MultipartRequest(method, parsedUrl);
+
+      print(parsedUrl);
+      print(fields);
+
+      var headers = await _buildRequestHeader({}, true);
+
+      for (var header in headers.entries) {
+        request.headers[header.key] = header.value;
+      }
+      print(fields);
+      // Add form fields
+      for (var field in fields.entries) {
+        //  if the field is file
+        if (field.value is File) {
+          request.files.add(await http.MultipartFile.fromPath(
+            field.key, // Field name for the file
+            (field.value as File).path, // Path to the file on the device
+          ));
+          // is it is list of files
+        } else if (field.value is List<File>) {
+          for (var fileSpecific in field.value as List<File>) {
+            request.files.add(await http.MultipartFile.fromPath(
+              field.key, // Field name for the file
+              fileSpecific.path, // Path to the file on the device
+            ));
+          }
+          // if it is normal field
+        } else {
+          request.fields[field.key] = field.value;
+        }
+      }
+
+      // Send the request
+      final response = await request.send().timeout(
+        const Duration(seconds: 60),
+        onTimeout: () {
+          throw TimeoutException(
+              'Sorry, the operation took too long to complete. Please try again!');
+        },
+      );
+
+      print(response.statusCode);
+
+      var bytesToString = await response.stream.bytesToString();
+      final decodedResponse = jsonDecode(bytesToString);
+
+      print(decodedResponse);
+
+      if (response.statusCode > 299) {
+        final error = ExceptionModel.fromJson(decodedResponse);
+        throw HttpException(error.message);
+      }
+
+      final parsedModel = fromJson(decodedResponse);
+
+      print(parsedModel);
+
+      return right(parsedModel);
+    } catch (error) {
+      print(error);
+      return handleException(error);
+    }
+  }
+
   Future<Map<String, String>> _buildRequestHeader(
-    Map<String, dynamic> headers,
-    bool requireToken,
-  ) async {
+      Map<String, dynamic> headers, bool requireToken,
+      [bool isForm = false]) async {
     Map<String, String> requestHeaders = {
-      'Content-Type': "application/json",
+      'Content-Type': isForm ? 'multipart/form-data' : "application/json",
       "Access-Control-Allow-Origin": "*",
       'Accept': '*/*',
       ...headers,
@@ -160,9 +283,8 @@ class HttpService extends HttpServiceInterface {
     if (requireToken) {
       String? token = await _sharedPreferencesService
           .getData<String>(StringConstants.token);
-      //   print(token);
       if (token != null) {
-        requestHeaders['Authorization'] = token;
+        requestHeaders['Authorization'] = 'Bearer $token';
       }
     }
 

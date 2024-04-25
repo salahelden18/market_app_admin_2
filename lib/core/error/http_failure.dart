@@ -38,9 +38,6 @@ class NotAuthorizedHttpFailure extends HttpFailure {
 
 Either<HttpFailure, T> handleException<T>(dynamic exception) {
   if (exception is HttpException) {
-    // if(exception.statusCode != null && exception.statusCode == 401) {
-    // context.read<AutoAuthenticationCubit>().logout();
-    // }
     return left(ServerHttpFailure(exception.message));
   } else if (exception is SocketException) {
     return left(

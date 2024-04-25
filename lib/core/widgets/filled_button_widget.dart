@@ -4,11 +4,11 @@ class FilledButtonWidget extends StatelessWidget {
   const FilledButtonWidget({
     super.key,
     required this.onPress,
-    required this.title,
+    required this.widget,
     this.backgroundColor,
   });
   final VoidCallback onPress;
-  final String title;
+  final Widget widget;
   final Color? backgroundColor;
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class FilledButtonWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
         ),
       ),
-      child: Text(title),
+      child: widget,
     );
   }
 }

@@ -42,94 +42,98 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Form(
-          key: _formKey,
-          child: Center(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(ImageConstants.signinImage),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Login', style: FontStyle.size22Black600),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Please Sign in to continue.',
-                        style: FontStyle.size18Normal,
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormFieldWidget(
-                        label: 'Email Address',
-                        prefixIcon: Icons.email_outlined,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'email address is required';
-                          } else if (!value.contains('@')) {
-                            return 'Please enter valid email';
-                          }
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Form(
+              key: _formKey,
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: size.height * 0.10),
+                    Image.asset(ImageConstants.signinImage),
+                    const SizedBox(width: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Login', style: FontStyle.size22Black600),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Please Sign in to continue.',
+                          style: FontStyle.size18Normal,
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormFieldWidget(
+                          label: 'Email Address',
+                          prefixIcon: Icons.email_outlined,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'email address is required';
+                            } else if (!value.contains('@')) {
+                              return 'Please enter valid email';
+                            }
 
-                          return null;
-                        },
-                        controller: emailController,
-                      ),
-                      const SizedBox(height: 15),
-                      TextFormFieldWidget(
-                        isPass: true,
-                        label: 'Password',
-                        prefixIcon: Icons.lock_outline,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'password is required';
-                          }
+                            return null;
+                          },
+                          controller: emailController,
+                        ),
+                        const SizedBox(height: 15),
+                        TextFormFieldWidget(
+                          isPass: true,
+                          label: 'Password',
+                          prefixIcon: Icons.lock_outline,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'password is required';
+                            }
 
-                          return null;
-                        },
-                        controller: passwordController,
-                      ),
-                      const SizedBox(height: 20),
-                      BlocConsumer<SiginCubit, SiginStates>(
-                        listener: (context, state) {
-                          if (state is SiginSuccessState) {
-                            showToast(
-                              context: context,
-                              msg: 'Signed in successfully',
-                              messageType: MessageType.success,
+                            return null;
+                          },
+                          controller: passwordController,
+                        ),
+                        const SizedBox(height: 20),
+                        BlocConsumer<SiginCubit, SiginStates>(
+                          listener: (context, state) {
+                            if (state is SiginSuccessState) {
+                              showToast(
+                                context: context,
+                                msg: 'Signed in successfully',
+                                messageType: MessageType.success,
+                              );
+
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  HomeScreen.routeName, (route) => false);
+                            } else if (state is SiginFailureState) {
+                              showToast(
+                                  context: context, msg: state.errorMessage);
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is SiginLoadingState) {
+                              return const LoadingWidget();
+                            }
+
+                            return SizedBox(
+                              width: double.infinity,
+                              height: 45,
+                              child: FilledButtonWidget(
+                                onPress: sigin,
+                                widget: const Text('Sign In'),
+                              ),
                             );
-
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                                HomeScreen.routeName, (route) => false);
-                          } else if (state is SiginFailureState) {
-                            showToast(
-                                context: context, msg: state.errorMessage);
-                          }
-                        },
-                        builder: (context, state) {
-                          if (state is SiginLoadingState) {
-                            return const LoadingWidget();
-                          }
-
-                          return SizedBox(
-                            width: double.infinity,
-                            height: 45,
-                            child: FilledButtonWidget(
-                              onPress: sigin,
-                              title: 'Sign In',
-                            ),
-                          );
-                        },
-                      )
-                    ],
-                  ),
+                          },
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
