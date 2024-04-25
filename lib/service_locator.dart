@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:market_app_web_2/features/addresses/presentation/model_view/countries_cubit/countries_cubit.dart';
 import 'package:market_app_web_2/features/categories/data/repo/categories_repo.dart';
 import 'package:market_app_web_2/features/categories/data/repo/categories_repo_impl.dart';
 import 'core/services/http_service.dart';
@@ -18,4 +19,7 @@ Future<void> init() async {
   sl.registerLazySingleton<AuthenticatioRepo>(
       () => AuthenticationRepoImpl(sl()));
   sl.registerLazySingleton<CategoriesRepo>(() => CategoriesRepoImpl(sl()));
+
+  // Addresses
+  sl.registerLazySingleton<CountriesCubit>(() => CountriesCubit());
 }

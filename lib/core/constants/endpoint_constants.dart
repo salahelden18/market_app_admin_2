@@ -12,4 +12,7 @@ class EndpointConstants {
   static const String subCategoryPath = "$_basePath/SubCategory";
   static const String subCategoriesInsidecategoryPath =
       "$subCategoryPath/Category";
+
+// Countires
+  static const String countries = '$_basePath/Countries';
 }
