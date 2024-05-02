@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:market_app_web_2/features/addresses/presentation/model_view/countries_cubit/countries_cubit.dart';
-import 'package:market_app_web_2/features/categories/presentation/model_views/subcategory/subcategory_cubit.dart';
+import 'package:market_app_web_2/features/addresses/presentation/model_view/districts_cubit/district_cubit.dart';
+import 'package:market_app_web_2/features/addresses/presentation/model_view/sub_districts_cubit/subdistrict_cubit.dart';
+import 'features/addresses/presentation/model_view/city_cubit/city_cubit.dart';
+import 'features/addresses/presentation/model_view/countries_cubit/countries_cubit.dart';
+import 'features/categories/presentation/model_views/subcategory/subcategory_cubit.dart';
 import 'core/cubit/sidemenu/side_menu_cubit.dart';
 import 'core/style/theme.dart';
 import 'core/utils/router.dart';
@@ -42,6 +45,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => CategoriesCubit(di.sl())),
         BlocProvider(create: (ctx) => SubCategoryCubit(di.sl())),
         BlocProvider(create: (ctx) => CountriesCubit(di.sl())),
+        BlocProvider(create: (ctx) => CityCubit(di.sl())),
+        BlocProvider(create: (ctx) => DistrictCubit(di.sl())),
+        BlocProvider(create: (ctx) => SubDistrictCubit(di.sl())),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,

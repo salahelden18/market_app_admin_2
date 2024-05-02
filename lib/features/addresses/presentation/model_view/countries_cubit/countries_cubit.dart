@@ -2,14 +2,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/utils/show_toast.dart';
 import '../../../data/models/country_model.dart';
 import '../../../../../main.dart';
-import '../../../data/repository/countries_repo/countries_repo.dart';
+import '../../../data/repository/countries_repo/address_repo.dart';
 import '../../../data/models/country_request_model.dart';
 import 'countries_state.dart';
 
 class CountriesCubit extends Cubit<CountriesStates> {
   CountriesCubit(this._countriesRepo) : super(CountriesInitialState());
 
-  final CountriesRepo _countriesRepo;
+  final AddressRepo _countriesRepo;
 
   Future getCountries() async {
     emit(CountriesLoadingState());
@@ -52,7 +52,7 @@ class CountriesCubit extends Cubit<CountriesStates> {
 
   Future updateAddress(
       String countryId, CountryRequestModel addAddressModel) async {
-    var result = await _countriesRepo.updateAddress(countryId, addAddressModel);
+    var result = await _countriesRepo.updateCountry(countryId, addAddressModel);
 
     result.fold(
       (l) {

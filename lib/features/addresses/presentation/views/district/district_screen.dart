@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../data/models/city_request_model.dart';
-import '../district/district_screen.dart';
-import '../widgets/add_edit_common.dart';
+import 'package:market_app_web_2/features/addresses/data/models/district_request_model.dart';
+import 'package:market_app_web_2/features/addresses/presentation/views/widgets/add_edit_common.dart';
+import '../subdistrict/subdistrict_screen.dart';
+import '../../model_view/districts_cubit/district_cubit.dart';
+import '../../model_view/districts_cubit/district_states.dart';
 
-import '../../model_view/city_cubit/city_cubit.dart';
-import '../../model_view/city_cubit/city_states.dart';
 import '../../../../../core/utils/dialog_manager_overlay.dart';
 import '../../../../../core/utils/show_modal_sheet.dart';
 import '../../../../../core/widgets/loading_widget.dart';
 import '../widgets/add_button_navigation_bar.dart';
 import '../widgets/title_and_edit_and_delete_item_widget.dart';
 
-class CityScreen extends StatefulWidget {
-  const CityScreen({super.key});
-  static const String routeName = "/city-screen";
+class DistrictScreen extends StatefulWidget {
+  const DistrictScreen({super.key});
+  static const String routeName = "/district-screen";
 
   @override
-  State<CityScreen> createState() => _CityScreenState();
+  State<DistrictScreen> createState() => _DistrictScreenState();
 }
 
-class _CityScreenState extends State<CityScreen> {
+class _DistrictScreenState extends State<DistrictScreen> {
   bool isExecuted = false;
-  late String countryId;
+  late String cityId;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!isExecuted) {
-      countryId = ModalRoute.of(context)!.settings.arguments as String;
-      context.read<CityCubit>().getCities(countryId);
+      cityId = ModalRoute.of(context)!.settings.arguments as String;
+      context.read<DistrictCubit>().getDistricts(cityId);
       isExecuted = true;
     }
   }
@@ -38,7 +38,7 @@ class _CityScreenState extends State<CityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Address (City)'),
+        title: const Text('Address (District)'),
       ),
       bottomNavigationBar: AddButtonNavigationBarWidget(
         ontap: () {
@@ -46,67 +46,69 @@ class _CityScreenState extends State<CityScreen> {
             context,
             AddEditCommon(
               fn: (enName, trName, arName) async {
-                CityRequetsModel cityRequetsModel = CityRequetsModel(
+                DistrictRequestModel districtRequestModel =
+                    DistrictRequestModel(
+                  cityId: cityId,
                   arName: arName,
                   enName: enName,
                   trName: trName,
-                  countryId: countryId,
                 );
-
-                await context.read<CityCubit>().addCity(cityRequetsModel);
+                await context
+                    .read<DistrictCubit>()
+                    .addDistrict(districtRequestModel);
               },
             ),
           );
         },
-        title: 'Add New City',
+        title: 'Add New District',
       ),
-      body: BlocBuilder<CityCubit, CityStates>(
+      body: BlocBuilder<DistrictCubit, DistrictStates>(
         builder: (context, state) {
-          if (state is CityLoadingState) {
+          if (state is DistrictLoadingState) {
             return const LoadingWidget();
-          } else if (state is CitySuccessState) {
+          } else if (state is DistrictSuccessState) {
             return ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
               itemBuilder: (context, index) => TitleAndEditAndDeleteItemWidget(
-                title: state.cities[index].enName!,
-                id: state.cities[index].id,
+                title: state.districts[index].enName!,
+                id: state.districts[index].id,
                 deleteOnTap: () async {
                   DialogManagerOverlay.showDialogWithMessage(context);
                   await context
-                      .read<CityCubit>()
-                      .deleteCity(state.cities[index].id);
+                      .read<DistrictCubit>()
+                      .deleteDistrict(state.districts[index].id);
                   DialogManagerOverlay.closeDialog();
                 },
                 editOnTap: () async {
                   showModalSheet(
                     context,
                     AddEditCommon(
-                      model: state.cities[index],
+                      model: state.districts[index],
                       fn: (enName, trName, arName) async {
-                        CityRequetsModel cityRequetsModel = CityRequetsModel(
+                        DistrictRequestModel districtRequestModel =
+                            DistrictRequestModel(
+                          cityId: cityId,
                           arName: arName,
                           enName: enName,
                           trName: trName,
-                          countryId: countryId,
                         );
-
-                        await context.read<CityCubit>().updateCity(
-                            state.cities[index].id, cityRequetsModel);
+                        await context.read<DistrictCubit>().updateDistrict(
+                            state.districts[index].id, districtRequestModel);
                       },
                     ),
                   );
                 },
                 onTap: () {
-                  Navigator.of(context).pushNamed(DistrictScreen.routeName,
-                      arguments: state.cities[index].id);
+                  Navigator.of(context).pushNamed(SubDistrictScreen.routeName,
+                      arguments: state.districts[index].id);
                 },
               ),
               separatorBuilder: (context, index) => const SizedBox(height: 10),
-              itemCount: state.cities.length,
+              itemCount: state.districts.length,
             );
           }
           final errorMessage =
-              state is CityFailureState ? state.errorMessage : 'Error';
+              state is DistrictFailureState ? state.errorMessage : 'Error';
           return Text(errorMessage);
         },
       ),

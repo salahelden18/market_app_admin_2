@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
-import 'features/addresses/data/repository/countries_repo/countries_repo.dart';
-import 'features/addresses/data/repository/countries_repo/countries_repo_impl.dart';
+import 'features/addresses/data/repository/countries_repo/address_repo.dart';
+import 'features/addresses/data/repository/countries_repo/address_repo_impl.dart';
 import 'core/services/http_service.dart';
 import 'features/authentication/data/repos/authentication_repo.dart';
 import 'features/authentication/data/repos/authentication_repo_impl.dart';
@@ -17,5 +17,5 @@ Future<void> init() async {
 
   sl.registerLazySingleton<AuthenticatioRepo>(
       () => AuthenticationRepoImpl(sl()));
-  sl.registerLazySingleton<CountriesRepo>(() => CountriesRepoImpl(sl()));
+  sl.registerLazySingleton<AddressRepo>(() => AddressRepoImpl(sl()));
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:market_app_web_2/core/utils/dialog_manager_overlay.dart';
-import 'package:market_app_web_2/core/utils/show_modal_sheet.dart';
-import 'package:market_app_web_2/features/addresses/presentation/views/countries/add_edit_country.dart';
+import 'package:market_app_web_2/features/addresses/presentation/views/city/city_screen.dart';
+import '../../../../../core/utils/dialog_manager_overlay.dart';
+import '../../../../../core/utils/show_modal_sheet.dart';
+import 'add_edit_country.dart';
 import '../../../../../core/widgets/loading_widget.dart';
 import '../../model_view/countries_cubit/countries_cubit.dart';
 import '../widgets/add_button_navigation_bar.dart';
@@ -39,7 +40,7 @@ class _CountryScreenState extends State<CountryScreen> {
             const AddEditCountry(),
           );
         },
-        title: 'Add New Address',
+        title: 'Add New Country',
       ),
       body: BlocBuilder<CountriesCubit, CountriesStates>(
         builder: (context, state) {
@@ -63,6 +64,10 @@ class _CountryScreenState extends State<CountryScreen> {
                     context,
                     AddEditCountry(country: state.countries[index]),
                   );
+                },
+                onTap: () {
+                  Navigator.of(context).pushNamed(CityScreen.routeName,
+                      arguments: state.countries[index].id);
                 },
               ),
               separatorBuilder: (context, index) => const SizedBox(height: 10),

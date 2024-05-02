@@ -15,4 +15,13 @@ class EndpointConstants {
 
 // Countires
   static const String countries = '$_basePath/Countries';
+
+  // Cities
+  static const String cities = '$_basePath/Cities';
+
+  // districts
+  static const String district = '$_basePath/Districts';
+
+// subdistricts
+  static const String subDistrict = '$_basePath/SubDistricts';
 }
