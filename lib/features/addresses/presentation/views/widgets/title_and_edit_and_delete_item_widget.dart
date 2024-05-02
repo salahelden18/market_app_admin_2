@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 class TitleAndEditAndDeleteItemWidget extends StatelessWidget {
   final String title;
   final String id;
+  final VoidCallback deleteOnTap;
+  final VoidCallback editOnTap;
 
   const TitleAndEditAndDeleteItemWidget({
     super.key,
     required this.title,
     required this.id,
+    required this.deleteOnTap,
+    required this.editOnTap,
   });
 
   @override
@@ -27,11 +31,11 @@ class TitleAndEditAndDeleteItemWidget extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: editOnTap,
             icon: const Icon(Icons.edit, color: Colors.amber),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: deleteOnTap,
             icon: const Icon(Icons.delete, color: Colors.red),
           ),
         ],

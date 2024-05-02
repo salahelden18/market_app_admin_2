@@ -22,6 +22,8 @@ void main() async {
   runApp(const MyApp());
 }
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -39,9 +41,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => SideMenuCubit()..init()),
         BlocProvider(create: (ctx) => CategoriesCubit(di.sl())),
         BlocProvider(create: (ctx) => SubCategoryCubit(di.sl())),
-        BlocProvider(create: (ctx) => CountriesCubit()),
+        BlocProvider(create: (ctx) => CountriesCubit(di.sl())),
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         theme: appTheme,
         onGenerateRoute: generateRouter,

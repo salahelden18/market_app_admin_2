@@ -1,49 +1,32 @@
-part of 'countries_cubit.dart';
+import 'package:equatable/equatable.dart';
 
-sealed class CountriesStates extends Equatable {
+import '../../../data/models/country_model.dart';
+
+abstract class CountriesStates extends Equatable {
   const CountriesStates();
 
   @override
   List<Object> get props => [];
 }
 
-final class CountriesInitial extends CountriesStates {}
+class CountriesInitialState extends CountriesStates {}
 
-final class GetCountriesLoadingState extends CountriesStates {}
+class CountriesLoadingState extends CountriesStates {}
 
-final class GetCountriesSuccessState extends CountriesStates {
-  final List<AddressModel> countries;
-  const GetCountriesSuccessState(this.countries);
+class CountriesSuccessState extends CountriesStates {
+  final List<CountryModel> countries;
+
+  const CountriesSuccessState(this.countries);
+
+  @override
+  List<Object> get props => [countries];
 }
 
-final class GetCountriesFailureState extends CountriesStates {
-  final String failureMessage;
-  const GetCountriesFailureState(this.failureMessage);
-}
+class CountriesFailureState extends CountriesStates {
+  final String errorMessage;
 
-final class AddCountryLoadingState extends CountriesStates {}
+  const CountriesFailureState(this.errorMessage);
 
-final class AddCountrySuccessState extends CountriesStates {}
-
-final class AddCountryFailureState extends CountriesStates {
-  final String failureMessage;
-  const AddCountryFailureState(this.failureMessage);
-}
-
-final class EditCountryLoadingState extends CountriesStates {}
-
-final class EditCountrySuccessState extends CountriesStates {}
-
-final class EditCountryFailureState extends CountriesStates {
-  final String failureMessage;
-  const EditCountryFailureState(this.failureMessage);
-}
-
-final class DeleteCountryLoadingState extends CountriesStates {}
-
-final class DeleteCountrySuccessState extends CountriesStates {}
-
-final class DeleteCountryFailureState extends CountriesStates {
-  final String failureMessage;
-  const DeleteCountryFailureState(this.failureMessage);
+  @override
+  List<Object> get props => [errorMessage];
 }

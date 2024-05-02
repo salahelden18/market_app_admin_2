@@ -1,4 +1,4 @@
-import 'package:market_app_web_2/features/addresses/presentation/views/addresses_screen.dart';
+import 'package:market_app_web_2/features/addresses/presentation/views/countries/country_screen.dart';
 
 import '../../features/categories/presentation/views/categories_screen.dart';
 
@@ -11,7 +11,7 @@ class ListConstants {
         navigationScreen: CategoriesScreen.routeName,
         title: 'Categories'),
     SideMenuModel(
-        id: 3, navigationScreen: AddressesScreen.routeName, title: 'Addresses'),
+        id: 3, navigationScreen: CountryScreen.routeName, title: 'Addresses'),
     SideMenuModel(
         id: 4, navigationScreen: 'navigationScreen', title: 'Payment Methods'),
     SideMenuModel(
