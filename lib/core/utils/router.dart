@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:market_app_web_2/features/authentication/presentation/views/authentication_screen.dart';
-import 'package:market_app_web_2/features/categories/presentation/views/add_edit_category_screen.dart';
-import 'package:market_app_web_2/features/categories/presentation/views/categories_screen.dart';
-import 'package:market_app_web_2/features/home/presentation/views/home_screen.dart';
-import 'package:market_app_web_2/splash_screen.dart';
+import '../../features/categories/presentation/views/add_edit_category_screen.dart';
+import '../../features/categories/presentation/views/categories_screen.dart';
+import '../../features/home/presentation/views/home_screen.dart';
+import '../../splash_screen.dart';
 
 Route<dynamic> generateRouter(RouteSettings settings) {
   switch (settings.name) {
