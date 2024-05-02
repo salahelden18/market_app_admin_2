@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'features/branch/data/repo/branch_repo.dart';
+import 'features/branch/data/repo/branch_repo_impl.dart';
 import 'features/home/data/repo/home_repo.dart';
 import 'features/home/data/repo/home_repo_impl.dart';
 import 'features/addresses/data/repository/countries_repo/address_repo.dart';
@@ -21,4 +23,5 @@ Future<void> init() async {
       () => AuthenticationRepoImpl(sl()));
   sl.registerLazySingleton<AddressRepo>(() => AddressRepoImpl(sl()));
   sl.registerLazySingleton<HomeRepo>(() => HomeRepoImpl(sl()));
+  sl.registerLazySingleton<BranchRepo>(() => BranchRepoImpl(sl()));
 }

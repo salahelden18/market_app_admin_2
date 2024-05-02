@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:market_app_web_2/core/widgets/loading_widget.dart';
-import 'package:market_app_web_2/features/home/presentation/model_views/stats/stats_cubit.dart';
-import 'package:market_app_web_2/features/home/presentation/views/widgets/home_layout_widget.dart';
+import 'package:market_app_web_2/features/branch/presentation/model_views/branch_cubit/branch_cubit.dart';
+import '../../../../core/widgets/loading_widget.dart';
+import '../model_views/stats/stats_cubit.dart';
+import 'widgets/home_layout_widget.dart';
 import '../../../../core/widgets/drawer_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -33,6 +34,9 @@ class HomeScreen extends StatelessWidget {
   }
 
   Future getData(BuildContext context) async {
-    await Future.wait([context.read<StatsCubit>().getStats()]);
+    await Future.wait([
+      context.read<StatsCubit>().getStats(),
+      context.read<BranchCubit>().getBranches()
+    ]);
   }
 }

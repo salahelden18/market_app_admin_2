@@ -9,7 +9,7 @@ import '../../../../core/widgets/text_button_widget.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
-  static const String routeName = '/categores-screen';
+  static const String routeName = '/categories-screen';
 
   @override
   State<CategoriesScreen> createState() => _CategoriesScreenState();

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:market_app_web_2/features/addresses/presentation/views/city/city_screen.dart';
-import 'package:market_app_web_2/features/addresses/presentation/views/district/district_screen.dart';
-import 'package:market_app_web_2/features/addresses/presentation/views/subdistrict/subdistrict_screen.dart';
+import '../../features/addresses/presentation/views/city/city_screen.dart';
+import '../../features/addresses/presentation/views/district/district_screen.dart';
+import '../../features/addresses/presentation/views/subdistrict/subdistrict_screen.dart';
+import '../../features/branch/presentation/views/branch_screen.dart';
+import '../../not_found_screen.dart';
 import '../../features/addresses/presentation/views/countries/country_screen.dart';
 import '../../features/authentication/presentation/views/authentication_screen.dart';
 import '../../features/categories/presentation/views/add_edit_category_screen.dart';
 import '../../features/categories/presentation/views/categories_screen.dart';
 import '../../features/home/presentation/views/home_screen.dart';
-import '../../splash_screen.dart';
 
 Route<dynamic> generateRouter(RouteSettings settings) {
   switch (settings.name) {
@@ -36,7 +37,6 @@ Route<dynamic> generateRouter(RouteSettings settings) {
         builder: (ctx) => const CountryScreen(),
         settings: settings,
       );
-
     case CityScreen.routeName:
       return MaterialPageRoute(
         builder: (ctx) => const CityScreen(),
@@ -52,10 +52,14 @@ Route<dynamic> generateRouter(RouteSettings settings) {
         builder: (ctx) => const SubDistrictScreen(),
         settings: settings,
       );
-
+    case BranchScreen.routeName:
+      return MaterialPageRoute(
+        builder: (ctx) => const BranchScreen(),
+        settings: settings,
+      );
     default:
       return MaterialPageRoute(
-        builder: (ctx) => const SplashScreen(),
+        builder: (ctx) => const NotFoundScreen(),
         settings: settings,
       );
   }

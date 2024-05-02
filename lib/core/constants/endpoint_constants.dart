@@ -27,4 +27,7 @@ class EndpointConstants {
 
   // statistics
   static const String statistics = "$_basePath/Statistics/name-number-stats";
+
+  // branch
+  static const String branch = "$_basePath/Branch";
 }
