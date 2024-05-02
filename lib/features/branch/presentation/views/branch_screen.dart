@@ -19,7 +19,7 @@ class BranchScreen extends StatelessWidget {
             onPressed: () {
               // TODO navigate to add address screen
             },
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
