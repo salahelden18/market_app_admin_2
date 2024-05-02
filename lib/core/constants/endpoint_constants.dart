@@ -24,4 +24,7 @@ class EndpointConstants {
 
 // subdistricts
   static const String subDistrict = '$_basePath/SubDistricts';
+
+  // statistics
+  static const String statistics = "$_basePath/Statistics/name-number-stats";
 }
