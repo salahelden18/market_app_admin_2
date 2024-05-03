@@ -1,4 +1,5 @@
 import 'package:market_app_web_2/features/addresses/presentation/views/countries/country_screen.dart';
+import 'package:market_app_web_2/features/banners/presentation/views/banners_screen.dart';
 import 'package:market_app_web_2/features/branch/presentation/views/branch_screen.dart';
 import 'package:market_app_web_2/features/products/presentation/views/products_screen.dart';
 
@@ -23,6 +24,6 @@ class ListConstants {
     SideMenuModel(
         id: 5, navigationScreen: 'navigationScreen', title: 'Payment Methods'),
     SideMenuModel(
-        id: 6, navigationScreen: 'navigationScreen', title: 'Banners'),
+        id: 6, navigationScreen: BannersScreen.routeName, title: 'Banners'),
   ];
 }

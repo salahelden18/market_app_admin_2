@@ -33,4 +33,7 @@ class EndpointConstants {
 
   // product
   static const String product = "$_basePath/Product";
+
+  // banners
+  static const String banners = "$_basePath/Banners";
 }

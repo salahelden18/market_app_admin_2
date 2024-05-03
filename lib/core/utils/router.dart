@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:market_app_web_2/features/banners/presentation/views/banners_screen.dart';
 import '../../features/products/presentation/views/add_edit_product_screen.dart';
 import '../../features/branch/presentation/views/add_edit_branch_screen.dart';
 import '../../features/products/presentation/views/products_screen.dart';
@@ -73,6 +74,11 @@ Route<dynamic> generateRouter(RouteSettings settings) {
     case AddEditProductScreen.routeName:
       return MaterialPageRoute(
         builder: (ctx) => const AddEditProductScreen(),
+        settings: settings,
+      );
+    case BannersScreen.routeName:
+      return MaterialPageRoute(
+        builder: (ctx) => const BannersScreen(),
         settings: settings,
       );
     default:

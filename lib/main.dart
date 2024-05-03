@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:market_app_web_2/features/addresses/presentation/model_view/districts_cubit/district_cubit.dart';
 import 'package:market_app_web_2/features/addresses/presentation/model_view/sub_districts_cubit/subdistrict_cubit.dart';
+import 'package:market_app_web_2/features/banners/presentation/model_views/banners_cubit.dart';
 import 'package:market_app_web_2/features/branch/presentation/model_views/branch_cubit/branch_cubit.dart';
 import 'package:market_app_web_2/features/home/presentation/model_views/stats/stats_cubit.dart';
 import 'package:market_app_web_2/features/products/presentation/model_views/products_cubit.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => StatsCubit(di.sl())),
         BlocProvider(create: (ctx) => BranchCubit(di.sl())),
         BlocProvider(create: (ctx) => ProductsCubit(di.sl())),
+        BlocProvider(create: (ctx) => BannersCubit(di.sl())),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
