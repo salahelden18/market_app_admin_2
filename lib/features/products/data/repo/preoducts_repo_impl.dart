@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:market_app_web_2/core/constants/endpoint_constants.dart';
+import 'package:market_app_web_2/features/products/data/models/product_model.dart';
+import 'package:market_app_web_2/features/products/data/models/product_request_model.dart';
 import '../../../../core/error/http_failure.dart';
 import '../models/all_products_model.dart';
 
@@ -18,6 +20,17 @@ class ProductsRepoImpl implements ProductsRepo {
       url: EndpointConstants.product,
       fromJson: (decodedJson) => AllProductsModel.fromJson(decodedJson),
       query: query,
+    );
+  }
+
+  @override
+  Future<Either<HttpFailure, ProductModel?>> addProduct(
+      ProductRequsetModel productRequsetModel) async {
+    return await _httpServiceInterface.request(
+      method: 'POST',
+      url: EndpointConstants.product,
+      fromJson: (decodedJson) => ProductModel.fromJson(decodedJson),
+      fields: productRequsetModel.toJson(),
     );
   }
 }

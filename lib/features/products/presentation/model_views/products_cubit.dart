@@ -1,4 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:market_app_web_2/core/utils/show_toast.dart';
+import 'package:market_app_web_2/features/products/data/models/product_request_model.dart';
+import 'package:market_app_web_2/main.dart';
 import '../../data/models/product_filter_model.dart';
 import '../../data/models/product_model.dart';
 import '../../data/repo/products_repo.dart';
@@ -41,6 +44,25 @@ class ProductsCubit extends Cubit<ProductsStates> {
             ..addAll(r.products);
 
           emit(ProductsSuccessState(allProducts, r.paginationModel));
+        }
+      },
+    );
+  }
+
+  Future addProduct(ProductRequsetModel productRequsetModel) async {
+    var result = await _productsRepo.addProduct(productRequsetModel);
+
+    result.fold(
+      (l) {
+        showToast(context: navigatorKey.currentState!.context, msg: l.message);
+      },
+      (r) {
+        if (r != null && state is ProductsSuccessState) {
+          var pagination = (state as ProductsSuccessState).pagination;
+
+          allProducts = List<ProductModel>.from(allProducts)..add(r);
+
+          emit(ProductsSuccessState(allProducts, pagination));
         }
       },
     );

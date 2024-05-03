@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../features/products/presentation/views/add_edit_product_screen.dart';
 import '../../features/branch/presentation/views/add_edit_branch_screen.dart';
 import '../../features/products/presentation/views/products_screen.dart';
 import '../../features/addresses/presentation/views/city/city_screen.dart';
@@ -67,6 +68,11 @@ Route<dynamic> generateRouter(RouteSettings settings) {
     case ProductsScreen.routeName:
       return MaterialPageRoute(
         builder: (ctx) => const ProductsScreen(),
+        settings: settings,
+      );
+    case AddEditProductScreen.routeName:
+      return MaterialPageRoute(
+        builder: (ctx) => const AddEditProductScreen(),
         settings: settings,
       );
     default:

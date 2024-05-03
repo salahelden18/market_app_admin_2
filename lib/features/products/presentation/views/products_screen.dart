@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'add_edit_product_screen.dart';
 import 'widgets/product_list_widget.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../model_views/products_cubit.dart';
@@ -26,7 +27,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
-          scrollController.offset - 10) {
+          scrollController.offset) {
         context.read<ProductsCubit>().getProducts(false);
       }
     });
@@ -46,7 +47,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              // TODO add new product page
+              Navigator.of(context).pushNamed(AddEditProductScreen.routeName);
             },
             icon: const Icon(Icons.add),
           ),
