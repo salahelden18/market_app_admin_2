@@ -177,7 +177,11 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
               selectSubCategory: selectSubCategory,
             ),
             const SizedBox(height: 10),
-            if (images.isNotEmpty) ProductImagesContainerWidget(images: images),
+            if (images.isNotEmpty)
+              ProductImagesContainerWidget(
+                images: images,
+                deleteImage: deleteImage,
+              ),
             const SizedBox(height: 10),
             TextButtonWidget(
               onPressed: () async {
@@ -195,5 +199,11 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
         ),
       ),
     );
+  }
+
+  void deleteImage(int index) {
+    setState(() {
+      images.removeAt(index);
+    });
   }
 }
