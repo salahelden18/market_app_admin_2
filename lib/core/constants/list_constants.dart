@@ -1,5 +1,6 @@
 import 'package:market_app_web_2/features/addresses/presentation/views/countries/country_screen.dart';
 import 'package:market_app_web_2/features/branch/presentation/views/branch_screen.dart';
+import 'package:market_app_web_2/features/products/presentation/views/products_screen.dart';
 
 import '../../features/categories/presentation/views/categories_screen.dart';
 
@@ -15,6 +16,8 @@ class ListConstants {
         id: 2, navigationScreen: CountryScreen.routeName, title: 'Addresses'),
     SideMenuModel(
         id: 3, navigationScreen: BranchScreen.routeName, title: 'Branches'),
+    SideMenuModel(
+        id: 3, navigationScreen: ProductsScreen.routeName, title: 'Products'),
     SideMenuModel(
         id: 4, navigationScreen: 'navigationScreen', title: 'Account'),
     SideMenuModel(
