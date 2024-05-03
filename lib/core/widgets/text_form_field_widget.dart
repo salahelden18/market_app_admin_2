@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:market_app_web_2/core/style/app_colors.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
@@ -11,6 +12,7 @@ class TextFormFieldWidget extends StatelessWidget {
     this.validator,
     this.controller,
     this.onChanged,
+    this.inputFormatters,
   });
 
   final bool isPass;
@@ -20,10 +22,12 @@ class TextFormFieldWidget extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final void Function(String)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      inputFormatters: inputFormatters,
       onChanged: onChanged,
       controller: controller,
       obscureText: isPass,

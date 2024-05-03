@@ -9,7 +9,7 @@ class BranchesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<BranchCubit>().state;
+    final state = context.watch<BranchCubit>().state;
     return state is BranchSuccessState
         ? SliverPadding(
             padding: const EdgeInsets.all(10),
@@ -19,6 +19,6 @@ class BranchesSection extends StatelessWidget {
                   BranchItemWidget(branchModel: state.branches[index]),
             ),
           )
-        : const SizedBox();
+        : const SliverToBoxAdapter();
   }
 }

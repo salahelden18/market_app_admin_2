@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import '../models/branch_request_model.dart';
 import '../../../../core/services/http_service_interface.dart';
 import 'branch_repo.dart';
 
@@ -18,6 +19,26 @@ class BranchRepoImpl implements BranchRepo {
       fromJson: (decodedJson) => List<BranchModel>.from(
         decodedJson.map((e) => BranchModel.fromJson(e)),
       ),
+    );
+  }
+
+  @override
+  Future<Either<HttpFailure, BranchModel?>> addBranch(
+      BranchRequestModel branchRequestModel) async {
+    return await _httpServiceInterface.post(
+      url: EndpointConstants.branch,
+      fromJson: (decodedJson) => BranchModel.fromJson(decodedJson),
+      body: branchRequestModel.toJson(),
+    );
+  }
+
+  @override
+  Future<Either<HttpFailure, BranchModel?>> updateBranch(
+      String id, BranchRequestModel branchRequestModel) async {
+    return await _httpServiceInterface.patch(
+      url: '${EndpointConstants.branch}/$id',
+      fromJson: (decodedJson) => BranchModel.fromJson(decodedJson),
+      body: branchRequestModel.toJson(),
     );
   }
 }

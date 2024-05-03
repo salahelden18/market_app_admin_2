@@ -9,7 +9,7 @@ import '../../model_view/city_cubit/city_states.dart';
 import '../../../../../core/utils/dialog_manager_overlay.dart';
 import '../../../../../core/utils/show_modal_sheet.dart';
 import '../../../../../core/widgets/loading_widget.dart';
-import '../widgets/add_button_navigation_bar.dart';
+import '../../../../../core/widgets/add_button_navigation_bar.dart';
 import '../widgets/title_and_edit_and_delete_item_widget.dart';
 
 class CityScreen extends StatefulWidget {

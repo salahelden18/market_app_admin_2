@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'add_edit_branch_screen.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../model_views/branch_cubit/branch_cubit.dart';
 import '../model_views/branch_cubit/branch_states.dart';
@@ -17,7 +18,7 @@ class BranchScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              // TODO navigate to add address screen
+              Navigator.of(context).pushNamed(AddEditBranchScreen.routeName);
             },
             icon: const Icon(Icons.add),
           ),

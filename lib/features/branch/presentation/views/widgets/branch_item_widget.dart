@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:market_app_web_2/core/style/app_colors.dart';
+import 'package:market_app_web_2/features/branch/presentation/views/add_edit_branch_screen.dart';
 import '../../../data/models/branch_model.dart';
 
 class BranchItemWidget extends StatelessWidget {
@@ -26,7 +27,8 @@ class BranchItemWidget extends StatelessWidget {
         ),
         trailing: IconButton(
             onPressed: () {
-              // TODO navigate to edit branch screen
+              Navigator.of(context).pushNamed(AddEditBranchScreen.routeName,
+                  arguments: branchModel);
             },
             icon: Icon(
               Icons.edit,

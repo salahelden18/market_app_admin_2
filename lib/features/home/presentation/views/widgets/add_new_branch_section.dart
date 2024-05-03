@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:market_app_web_2/core/style/font_style.dart';
+import '../../../../../core/style/font_style.dart';
+import '../../../../branch/presentation/views/add_edit_branch_screen.dart';
 
 class AddNewBranchSection extends StatelessWidget {
   const AddNewBranchSection({super.key});
@@ -15,7 +16,7 @@ class AddNewBranchSection extends StatelessWidget {
             const Text('Branches', style: FontStyle.size22Black600),
             TextButton(
               onPressed: () {
-                // TODO navigate to add new branch screen
+                Navigator.of(context).pushNamed(AddEditBranchScreen.routeName);
               },
               child: const Text('Add New Branch'),
             ),

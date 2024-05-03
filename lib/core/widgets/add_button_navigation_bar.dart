@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/widgets/filled_button_widget.dart';
+import 'filled_button_widget.dart';
 
 class AddButtonNavigationBarWidget extends StatelessWidget {
   const AddButtonNavigationBarWidget(

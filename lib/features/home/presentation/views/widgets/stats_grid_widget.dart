@@ -26,6 +26,6 @@ class StatsGridWidget extends StatelessWidget {
               ),
             ),
           )
-        : const SizedBox();
+        : const SliverToBoxAdapter();
   }
 }

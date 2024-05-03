@@ -15,6 +15,8 @@ class BranchModel extends Equatable {
   final double? minimumOrderValue;
   final double? maximumCoverAreaInKM;
   final bool isOutsideDelivery;
+  final String? currency;
+  final String? currencySymbol;
 
   const BranchModel({
     required this.id,
@@ -31,6 +33,8 @@ class BranchModel extends Equatable {
     required this.minimumOrderValue,
     required this.maximumCoverAreaInKM,
     required this.isOutsideDelivery,
+    required this.currency,
+    required this.currencySymbol,
   });
 
   factory BranchModel.fromJson(Map<String, dynamic> json) {
@@ -50,6 +54,8 @@ class BranchModel extends Equatable {
       maximumCoverAreaInKM:
           double.tryParse(json['maximumCoverAreaInKM'].toString()),
       isOutsideDelivery: json['isOutsideDelivery'],
+      currency: json['currency'],
+      currencySymbol: json['currencySymbol'],
     );
   }
 
@@ -69,5 +75,7 @@ class BranchModel extends Equatable {
         minimumOrderValue,
         maximumCoverAreaInKM,
         isOutsideDelivery,
+        currency,
+        currencySymbol,
       ];
 }
