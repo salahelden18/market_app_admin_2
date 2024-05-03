@@ -33,4 +33,12 @@ class ProductsRepoImpl implements ProductsRepo {
       fields: productRequsetModel.toJson(),
     );
   }
+
+  @override
+  Future<Either<HttpFailure, dynamic>> deleteProduct(String id) async {
+    return await _httpServiceInterface.delete(
+      url: '${EndpointConstants.product}/$id',
+      fromJson: (decodedJson) => null,
+    );
+  }
 }

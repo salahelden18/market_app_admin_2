@@ -59,6 +59,8 @@ class ProductsCubit extends Cubit<ProductsStates> {
       (r) {
         if (r != null && state is ProductsSuccessState) {
           var pagination = (state as ProductsSuccessState).pagination;
+          pagination =
+              pagination.copyWith(totalCount: pagination.totalCount + 1);
 
           allProducts = List<ProductModel>.from(allProducts)..add(r);
 
@@ -66,5 +68,23 @@ class ProductsCubit extends Cubit<ProductsStates> {
         }
       },
     );
+  }
+
+  Future deleteProduct(String id) async {
+    var result = await _productsRepo.deleteProduct(id);
+
+    result.fold((l) {
+      showToast(context: navigatorKey.currentState!.context, msg: l.message);
+    }, (r) {
+      if (state is ProductsSuccessState) {
+        var pagination = (state as ProductsSuccessState).pagination;
+        pagination = pagination.copyWith(totalCount: pagination.totalCount - 1);
+
+        allProducts = List<ProductModel>.from(allProducts)
+          ..removeWhere((element) => element.id == id);
+
+        emit(ProductsSuccessState(allProducts, pagination));
+      }
+    });
   }
 }

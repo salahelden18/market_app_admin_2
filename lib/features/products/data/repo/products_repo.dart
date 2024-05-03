@@ -9,4 +9,5 @@ abstract class ProductsRepo {
   Future<Either<HttpFailure, AllProductsModel?>> getProducts(String query);
   Future<Either<HttpFailure, ProductModel?>> addProduct(
       ProductRequsetModel productRequsetModel);
+  Future<Either<HttpFailure, dynamic>> deleteProduct(String id);
 }

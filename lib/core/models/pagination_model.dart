@@ -28,6 +28,24 @@ class PaginationModel extends Equatable {
     );
   }
 
+  PaginationModel copyWith({
+    int? totalCount,
+    int? pageSize,
+    int? currentPage,
+    int? totalPages,
+    bool? hasNextPage,
+    bool? hasPreviousPage,
+  }) {
+    return PaginationModel(
+      totalCount: totalCount ?? this.totalCount,
+      pageSize: pageSize ?? this.pageSize,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
+      hasNextPage: hasNextPage ?? this.hasNextPage,
+      hasPreviousPage: hasPreviousPage ?? this.hasPreviousPage,
+    );
+  }
+
   @override
   List<Object?> get props => [
         totalCount,

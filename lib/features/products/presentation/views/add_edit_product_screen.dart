@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../data/models/product_model.dart';
 import '../../../../core/utils/show_toast.dart';
 import 'widgets/product_categories_section.dart';
 import '../../../../core/widgets/description_fields.dart';
@@ -36,6 +37,7 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
   final TextEditingController manufacturerController = TextEditingController();
   String? subCategoryId;
   List<File> images = [];
+  late ProductModel? productModel;
 
   @override
   void initState() {
@@ -43,6 +45,13 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
     if (context.read<CategoriesCubit>().state is! CategoriesSuccessState) {
       context.read<CategoriesCubit>().getCategories();
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    productModel = ModalRoute.of(context)?.settings.arguments as ProductModel?;
   }
 
   selectSubCategory(String id) {
@@ -66,7 +75,25 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Product'),
+        title: Text('${productModel == null ? 'Add' : 'Edit'} Product'),
+        actions: productModel != null
+            ? [
+                IconButton(
+                  onPressed: () async {
+                    DialogManagerOverlay.showDialogWithMessage(context);
+
+                    await context
+                        .read<ProductsCubit>()
+                        .deleteProduct(productModel!.id);
+
+                    DialogManagerOverlay.closeDialog();
+                    // ignore: use_build_context_synchronously
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.delete),
+                ),
+              ]
+            : null,
       ),
       bottomNavigationBar: AddButtonNavigationBarWidget(
         ontap: () async {
@@ -116,7 +143,7 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
             Navigator.pop(context);
           }
         },
-        title: 'Add Product',
+        title: '${productModel == null ? 'Add' : 'Edit'} Product',
       ),
       body: Form(
         key: _formKey,
