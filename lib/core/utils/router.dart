@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:market_app_web_2/features/banners/presentation/model_views/banners_cubit.dart';
 import 'package:market_app_web_2/features/banners/presentation/views/banners_screen.dart';
+import 'package:market_app_web_2/service_locator.dart';
 import '../../features/products/presentation/views/add_edit_product_screen.dart';
 import '../../features/branch/presentation/views/add_edit_branch_screen.dart';
 import '../../features/products/presentation/views/products_screen.dart';
@@ -78,7 +81,8 @@ Route<dynamic> generateRouter(RouteSettings settings) {
       );
     case BannersScreen.routeName:
       return MaterialPageRoute(
-        builder: (ctx) => const BannersScreen(),
+        builder: (ctx) => BlocProvider(
+            create: (ctx) => BannersCubit(sl()), child: const BannersScreen()),
         settings: settings,
       );
     default:
