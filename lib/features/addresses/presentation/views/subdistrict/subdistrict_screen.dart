@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:market_app_web_2/features/addresses/data/models/subdistrict_request_model.dart';
-import 'package:market_app_web_2/features/addresses/presentation/model_view/sub_districts_cubit/subdistrict_cubit.dart';
-import 'package:market_app_web_2/features/addresses/presentation/model_view/sub_districts_cubit/subdistrict_states.dart';
-
+import '../../../data/models/subdistrict_request_model.dart';
+import '../../model_view/sub_districts_cubit/subdistrict_cubit.dart';
+import '../../model_view/sub_districts_cubit/subdistrict_states.dart';
 import '../../../../../core/utils/dialog_manager_overlay.dart';
 import '../../../../../core/utils/show_modal_sheet.dart';
 import '../../../../../core/widgets/loading_widget.dart';
@@ -37,7 +36,7 @@ class _SubDistrictScreenState extends State<SubDistrictScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Address (District)'),
+        title: const Text('Address (Sub District)'),
       ),
       bottomNavigationBar: AddButtonNavigationBarWidget(
         ontap: () {
@@ -59,7 +58,7 @@ class _SubDistrictScreenState extends State<SubDistrictScreen> {
             ),
           );
         },
-        title: 'Add New District',
+        title: 'Add New Sub District',
       ),
       body: BlocBuilder<SubDistrictCubit, SubDistrictStates>(
         builder: (context, state) {

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:market_app_web_2/core/constants/endpoint_constants.dart';
-import 'package:market_app_web_2/features/products/data/models/product_model.dart';
-import 'package:market_app_web_2/features/products/data/models/product_request_model.dart';
+import '../../../../core/constants/endpoint_constants.dart';
+import '../models/product_model.dart';
+import '../models/product_request_model.dart';
 import '../../../../core/error/http_failure.dart';
 import '../models/all_products_model.dart';
 
@@ -39,6 +39,16 @@ class ProductsRepoImpl implements ProductsRepo {
     return await _httpServiceInterface.delete(
       url: '${EndpointConstants.product}/$id',
       fromJson: (decodedJson) => null,
+    );
+  }
+
+  @override
+  Future<Either<HttpFailure, ProductModel?>> updateProduct(
+      String id, ProductRequsetModel productRequsetModel) async {
+    return await _httpServiceInterface.patch(
+      url: '${EndpointConstants.product}/$id',
+      fromJson: (decodedJson) => ProductModel.fromJson(decodedJson),
+      body: productRequsetModel.toJson(),
     );
   }
 }

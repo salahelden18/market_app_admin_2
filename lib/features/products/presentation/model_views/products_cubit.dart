@@ -87,4 +87,26 @@ class ProductsCubit extends Cubit<ProductsStates> {
       }
     });
   }
+
+  Future updateProduct(
+      String id, ProductRequsetModel productRequsetModel) async {
+    var result = await _productsRepo.updateProduct(id, productRequsetModel);
+
+    result.fold(
+      (l) {
+        showToast(context: navigatorKey.currentState!.context, msg: l.message);
+      },
+      (r) {
+        if (r != null && state is ProductsSuccessState) {
+          var pagination = (state as ProductsSuccessState).pagination;
+
+          allProducts = allProducts
+              .map((element) => element.id == id ? r : element)
+              .toList();
+
+          emit(ProductsSuccessState(allProducts, pagination));
+        }
+      },
+    );
+  }
 }

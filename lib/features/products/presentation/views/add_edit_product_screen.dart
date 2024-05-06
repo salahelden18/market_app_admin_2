@@ -40,18 +40,23 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
   late ProductModel? productModel;
 
   @override
-  void initState() {
-    super.initState();
-    if (context.read<CategoriesCubit>().state is! CategoriesSuccessState) {
-      context.read<CategoriesCubit>().getCategories();
-    }
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     productModel = ModalRoute.of(context)?.settings.arguments as ProductModel?;
+    if (productModel != null) {
+      if (context.read<CategoriesCubit>().state is! CategoriesSuccessState &&
+          productModel != null) {
+        context.read<CategoriesCubit>().getCategories();
+      }
+      enNameController.text = productModel?.enName ?? '';
+      trNameController.text = productModel?.trName ?? '';
+      arNameController.text = productModel?.arName ?? '';
+      enDescriptionController.text = productModel?.enDescription ?? '';
+      trDescriptionController.text = productModel?.trDescription ?? '';
+      arDescriptionController.text = productModel?.arDescription ?? '';
+      manufacturerController.text = productModel?.manufacturer ?? '';
+    }
   }
 
   selectSubCategory(String id) {
@@ -99,21 +104,24 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
         ontap: () async {
           final isValid = _formKey.currentState!.validate();
           if (isValid) {
-            if (images.isEmpty) {
-              showToast(
-                  context: context,
-                  msg: 'you should at least choose one image');
-              return;
-            }
+            if (productModel == null) {
+              if (images.isEmpty) {
+                showToast(
+                    context: context,
+                    msg: 'you should at least choose one image');
+                return;
+              }
 
-            if (subCategoryId == null) {
-              showToast(
-                  context: context,
-                  msg: 'you should select sub category for this product');
-              return;
+              if (subCategoryId == null) {
+                showToast(
+                    context: context,
+                    msg: 'you should select sub category for this product');
+                return;
+              }
             }
 
             DialogManagerOverlay.showDialogWithMessage(context);
+
             ProductRequsetModel productRequsetModel = ProductRequsetModel(
               arDescription: arDescriptionController.text.isEmpty
                   ? null
@@ -124,7 +132,7 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
                   ? null
                   : enDescriptionController.text,
               enName: enNameController.text,
-              images: images,
+              images: productModel != null ? null : images,
               manufacturer: manufacturerController.text.isEmpty
                   ? null
                   : manufacturerController.text,
@@ -133,10 +141,18 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
                   : trDescriptionController.text,
               trName:
                   trNameController.text.isEmpty ? null : trNameController.text,
-              subCategoryId: subCategoryId ?? '',
+              subCategoryId: productModel != null ? null : subCategoryId,
             );
 
-            await context.read<ProductsCubit>().addProduct(productRequsetModel);
+            if (productModel == null) {
+              await context
+                  .read<ProductsCubit>()
+                  .addProduct(productRequsetModel);
+            } else {
+              await context
+                  .read<ProductsCubit>()
+                  .updateProduct(productModel!.id, productRequsetModel);
+            }
 
             DialogManagerOverlay.closeDialog();
             // ignore: use_build_context_synchronously
@@ -173,28 +189,30 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
               label: 'Manufacturer',
               controller: manufacturerController,
             ),
-            ProductCategorySection(
-              selectSubCategory: selectSubCategory,
-            ),
-            const SizedBox(height: 10),
-            if (images.isNotEmpty)
+            if (productModel == null)
+              ProductCategorySection(
+                selectSubCategory: selectSubCategory,
+              ),
+            if (productModel == null) const SizedBox(height: 10),
+            if (images.isNotEmpty && productModel == null)
               ProductImagesContainerWidget(
                 images: images,
                 deleteImage: deleteImage,
               ),
-            const SizedBox(height: 10),
-            TextButtonWidget(
-              onPressed: () async {
-                var pickedImages = await AssetPickerService.pickImages();
+            if (productModel == null) const SizedBox(height: 10),
+            if (productModel == null)
+              TextButtonWidget(
+                onPressed: () async {
+                  var pickedImages = await AssetPickerService.pickImages();
 
-                if (pickedImages != null) {
-                  setState(() {
-                    images = pickedImages;
-                  });
-                }
-              },
-              title: 'Select Images',
-            ),
+                  if (pickedImages != null) {
+                    setState(() {
+                      images = pickedImages;
+                    });
+                  }
+                },
+                title: 'Select Images',
+              ),
           ],
         ),
       ),

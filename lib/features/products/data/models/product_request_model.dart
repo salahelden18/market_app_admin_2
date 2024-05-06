@@ -9,17 +9,17 @@ class ProductRequsetModel extends Equatable {
   final String? arDescription;
   final String? trDescription;
   final String? manufacturer;
-  final String subCategoryId;
-  final List<File> images;
+  final String? subCategoryId;
+  final List<File>? images;
 
   const ProductRequsetModel({
     required this.arDescription,
     required this.arName,
     required this.enDescription,
     required this.enName,
-    required this.images,
+    this.images,
     required this.manufacturer,
-    required this.subCategoryId,
+    this.subCategoryId,
     required this.trDescription,
     required this.trName,
   });
@@ -35,7 +35,7 @@ class ProductRequsetModel extends Equatable {
       'manufacturer': manufacturer,
       'subCategoryId': subCategoryId,
       'imageFiles': images,
-    };
+    }..removeWhere((key, value) => value == null);
   }
 
   @override

@@ -10,4 +10,6 @@ abstract class ProductsRepo {
   Future<Either<HttpFailure, ProductModel?>> addProduct(
       ProductRequsetModel productRequsetModel);
   Future<Either<HttpFailure, dynamic>> deleteProduct(String id);
+  Future<Either<HttpFailure, ProductModel?>> updateProduct(
+      String id, ProductRequsetModel productRequsetModel);
 }
