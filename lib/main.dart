@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:market_app_web_2/features/addresses/presentation/model_view/districts_cubit/district_cubit.dart';
-import 'package:market_app_web_2/features/addresses/presentation/model_view/sub_districts_cubit/subdistrict_cubit.dart';
-import 'package:market_app_web_2/features/branch/presentation/model_views/branch_cubit/branch_cubit.dart';
-import 'package:market_app_web_2/features/home/presentation/model_views/stats/stats_cubit.dart';
-import 'package:market_app_web_2/features/products/presentation/model_views/products_cubit.dart';
+import 'package:market_app_web_2/features/branch_module/branch_categories/presentation/model_views/branch_categories/branch_categories_cubit.dart';
+import 'package:market_app_web_2/features/branch_module/branch_categories/presentation/model_views/branch_sub_category/branch_subcategory_cubit.dart';
+import 'features/addresses/presentation/model_view/districts_cubit/district_cubit.dart';
+import 'features/addresses/presentation/model_view/sub_districts_cubit/subdistrict_cubit.dart';
+import 'features/branch/presentation/model_views/branch_cubit/branch_cubit.dart';
+import 'features/branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
+import 'features/home/presentation/model_views/stats/stats_cubit.dart';
+import 'features/products/presentation/model_views/products_cubit.dart';
 import 'features/addresses/presentation/model_view/city_cubit/city_cubit.dart';
 import 'features/addresses/presentation/model_view/countries_cubit/countries_cubit.dart';
 import 'features/categories/presentation/model_views/subcategory/subcategory_cubit.dart';
@@ -54,6 +57,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => StatsCubit(di.sl())),
         BlocProvider(create: (ctx) => BranchCubit(di.sl())),
         BlocProvider(create: (ctx) => ProductsCubit(di.sl())),
+        BlocProvider(create: (ctx) => SelectedBranchCubit()),
+        BlocProvider(create: (ctx) => BranchCategoriesCubit(di.sl())),
+        BlocProvider(create: (ctx) => BranchSubCategoryCubit(di.sl())),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,

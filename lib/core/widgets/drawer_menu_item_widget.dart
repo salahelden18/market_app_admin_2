@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:market_app_web_2/core/models/side_menu_model.dart';
 
-class DrawerMenuItmeWidget extends StatelessWidget {
-  const DrawerMenuItmeWidget({super.key, required this.sideMenuModel});
+class DrawerMenuItemWidget extends StatelessWidget {
+  const DrawerMenuItemWidget({super.key, required this.sideMenuModel});
   final SideMenuModel sideMenuModel;
 
   @override

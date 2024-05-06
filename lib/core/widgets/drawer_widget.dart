@@ -26,7 +26,7 @@ class DrawerWidget extends StatelessWidget {
             const SizedBox(height: 10),
             ...List.generate(
               ListConstants.adminSideMenuList.length,
-              (index) => DrawerMenuItmeWidget(
+              (index) => DrawerMenuItemWidget(
                 sideMenuModel: ListConstants.adminSideMenuList[index],
               ),
             ),

@@ -132,6 +132,10 @@ class HttpService extends HttpServiceInterface {
             'Sorry, the operation took too long to complete. Please try again!');
       });
 
+      if (response.statusCode == 204) {
+        return right(null);
+      }
+
       final decodedResponse = jsonDecode(response.body);
 
       print(decodedResponse);

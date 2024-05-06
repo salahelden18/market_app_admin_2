@@ -36,4 +36,8 @@ class EndpointConstants {
 
   // banners
   static const String banners = "$_basePath/Banners";
+
+  // branch subcategories
+  static const String branchSubcategory = "$_basePath/BranchSubCategory";
+  static const String branchCategory = "$_basePath/BranchCategory";
 }

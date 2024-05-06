@@ -1,6 +1,10 @@
 import 'package:get_it/get_it.dart';
-import 'package:market_app_web_2/features/banners/data/repo/banner_repo.dart';
-import 'package:market_app_web_2/features/banners/data/repo/banner_repo_impl.dart';
+import 'features/banners/data/repo/banner_repo.dart';
+import 'features/banners/data/repo/banner_repo_impl.dart';
+import 'features/branch_module/branch/data/repo/branch_module_repo.dart';
+import 'features/branch_module/branch/data/repo/branch_module_repo_impl.dart';
+import 'features/branch_module/branch_categories/data/repo/branch_categories_repo.dart';
+import 'features/branch_module/branch_categories/data/repo/branch_categories_repo_impl.dart';
 import 'features/categories/data/repo/categories_repo.dart';
 import 'features/categories/data/repo/categories_repo_impl.dart';
 import 'features/products/data/repo/preoducts_repo_impl.dart';
@@ -33,4 +37,7 @@ Future<void> init() async {
   sl.registerLazySingleton<BranchRepo>(() => BranchRepoImpl(sl()));
   sl.registerLazySingleton<ProductsRepo>(() => ProductsRepoImpl(sl()));
   sl.registerLazySingleton<BannerRepo>(() => BannerRepoImpl(sl()));
+  sl.registerLazySingleton<BranchModuleRepo>(() => BranchModuleRepoImpl());
+  sl.registerLazySingleton<BranchCategoriesRepo>(
+      () => BranchCategoriesRepoImpl(sl()));
 }

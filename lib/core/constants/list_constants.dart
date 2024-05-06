@@ -1,6 +1,7 @@
 import 'package:market_app_web_2/features/addresses/presentation/views/countries/country_screen.dart';
 import 'package:market_app_web_2/features/banners/presentation/views/banners_screen.dart';
 import 'package:market_app_web_2/features/branch/presentation/views/branch_screen.dart';
+import 'package:market_app_web_2/features/branch_module/branch_categories/presentation/views/branch_categories_screen.dart';
 import 'package:market_app_web_2/features/products/presentation/views/products_screen.dart';
 
 import '../../features/categories/presentation/views/categories_screen.dart';
@@ -25,5 +26,13 @@ class ListConstants {
         id: 5, navigationScreen: 'navigationScreen', title: 'Payment Methods'),
     SideMenuModel(
         id: 6, navigationScreen: BannersScreen.routeName, title: 'Banners'),
+  ];
+
+  static const List<SideMenuModel> branchModule = [
+    SideMenuModel(
+      id: 1,
+      navigationScreen: BranchCategoryScreen.routeName,
+      title: 'Branch Categories',
+    ),
   ];
 }
