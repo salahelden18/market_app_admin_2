@@ -30,7 +30,7 @@ class ProductFilterModel extends Equatable {
   String toQueryString() {
     String query = 'page=$page&pageSize=$pageSize';
 
-    if (categoryId != null) {
+    if (categoryId != null) {   
       query += '&categoryId=$categoryId';
     }
 

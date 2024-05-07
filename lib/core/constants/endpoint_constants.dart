@@ -30,6 +30,8 @@ class EndpointConstants {
 
   // branch
   static const String branch = "$_basePath/Branch";
+  static String branchProducts(String branchId) =>
+      "$_basePath/BranchProduct/$branchId";
 
   // product
   static const String product = "$_basePath/Product";

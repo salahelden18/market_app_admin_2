@@ -81,7 +81,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
             final errorMessage =
                 state is ProductsFailureState ? state.errorMessage : 'Error';
             return Center(
-              child: Text(errorMessage),
+            child: Text(errorMessage),
             );
           }
         },

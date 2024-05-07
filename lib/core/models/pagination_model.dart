@@ -12,7 +12,7 @@ class PaginationModel extends Equatable {
     required this.currentPage,
     required this.hasNextPage,
     required this.hasPreviousPage,
-    required this.pageSize,
+    required this.pageSize, 
     required this.totalCount,
     required this.totalPages,
   });
