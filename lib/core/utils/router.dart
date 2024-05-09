@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:market_app_web_2/features/branch_module/branch/presentation/model_views/orders_cubit.dart';
 import 'package:market_app_web_2/features/branch_module/branch_categories/presentation/views/branch_categories_screen.dart';
 import 'package:market_app_web_2/features/branch_module/branch_categories/presentation/views/branch_sub_categories_screen.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/model_view/cubit/branch_products_cubit.dart';
@@ -92,7 +93,9 @@ Route<dynamic> generateRouter(RouteSettings settings) {
       );
     case BranchModuleScreen.routeName:
       return MaterialPageRoute(
-        builder: (ctx) => const BranchModuleScreen(),
+        builder: (ctx) => BlocProvider(
+            create: (ctx) => OrdersCubit(sl()),
+            child: const BranchModuleScreen()),
         settings: settings,
       );
     case BranchCategoryScreen.routeName:

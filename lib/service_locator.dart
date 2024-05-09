@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'features/branch_module/branch/services/order_service.dart';
 import 'features/banners/data/repo/banner_repo.dart';
 import 'features/banners/data/repo/banner_repo_impl.dart';
 import 'features/branch_module/branch/data/repo/branch_module_repo.dart';
@@ -28,6 +29,7 @@ Future<void> init() async {
   // Services
   sl.registerLazySingleton(() => SharedPreferencesService());
   sl.registerLazySingleton<HttpServiceInterface>(() => HttpService(sl()));
+  sl.registerLazySingleton<OrderServiceSignalR>(() => OrderServiceSignalR());
 
   sl.registerLazySingleton<AuthenticatioRepo>(
       () => AuthenticationRepoImpl(sl()));
