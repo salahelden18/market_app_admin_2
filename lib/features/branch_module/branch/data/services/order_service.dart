@@ -70,6 +70,9 @@ class OrderServiceSignalR {
         print('********************');
         UpdateOrderRealTimeModel updateOrderRealTimeModel =
             UpdateOrderRealTimeModel.fromJson(decodedJson);
+        print(updateOrderRealTimeModel);
+        print('here after the fromJosn');
+
         callback(updateOrderRealTimeModel);
       },
     );

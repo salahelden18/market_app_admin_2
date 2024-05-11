@@ -73,11 +73,20 @@ class OrdersCubit extends Cubit<OrderStates> {
     print('entered here and started listening for updates');
     _orderServiceSignalR.listenForUpdateOrder(
       (updateOrder) {
+        print(updateOrder);
         // Find the index of the updated order in the list
         int index = orders.indexWhere((order) => order.id == updateOrder.id);
+        print(index);
         if (index != -1) {
-          orders[index] =
-              orders[index].copyWith(orderStatusModel: updateOrder.orderStatus);
+          print('the item is exist');
+          final updatedOrder = orders[index].copyWith(
+            orderStatusModel: updateOrder.orderStatus,
+          );
+
+          orders = orders
+              .map((e) => e.id == updatedOrder.id ? updatedOrder : e)
+              .toList();
+
           emit(state.copyWith(orders: orders, isLoading: false));
         }
       },
