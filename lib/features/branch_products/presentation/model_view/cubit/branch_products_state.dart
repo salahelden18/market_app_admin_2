@@ -7,9 +7,13 @@ class BranchProductsStates extends Equatable {
 
 class GetBranchProductsLoadingState extends BranchProductsStates {}
 
-class GetBranchProductsSuccessState extends BranchProductsStates {}
+class GetBranchProductsSuccessState extends BranchProductsStates {
+  final List<BranchProductModel> branchProducts;  
+  final PaginationModel paginationModel;
+  GetBranchProductsSuccessState(this.branchProducts, this.paginationModel);
+}
 
 class GetBranchProductsErrorState extends BranchProductsStates {
   final String errorMessage;
-  GetBranchProductsErrorState (this.errorMessage);
+  GetBranchProductsErrorState(this.errorMessage);
 }

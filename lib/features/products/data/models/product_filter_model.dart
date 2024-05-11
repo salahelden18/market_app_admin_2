@@ -10,7 +10,7 @@ class ProductFilterModel extends Equatable {
     this.categoryId,
     this.subCategoryId,
     this.page = 1,
-    this.pageSize = 24,
+    this.pageSize = 12,
   });
 
   ProductFilterModel copyWith({
@@ -30,7 +30,7 @@ class ProductFilterModel extends Equatable {
   String toQueryString() {
     String query = 'page=$page&pageSize=$pageSize';
 
-    if (categoryId != null) {   
+    if (categoryId != null) {
       query += '&categoryId=$categoryId';
     }
 

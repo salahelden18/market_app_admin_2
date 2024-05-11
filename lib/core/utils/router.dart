@@ -112,7 +112,7 @@ Route<dynamic> generateRouter(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (ctx) => BlocProvider(
           create: (context) => BranchProductsCubit(),
-          child: const BranchProductsScreen(),
+          child: const BranchProductsScreen(),  
         ),
         settings: settings,
       );
