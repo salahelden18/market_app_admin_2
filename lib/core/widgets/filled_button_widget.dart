@@ -7,7 +7,7 @@ class FilledButtonWidget extends StatelessWidget {
     required this.widget,
     this.backgroundColor,
   });
-  final VoidCallback onPress;
+  final VoidCallback? onPress;
   final Widget widget;
   final Color? backgroundColor;
   @override

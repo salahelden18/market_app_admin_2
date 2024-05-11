@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'features/branch_module/branch/services/order_service.dart';
+import 'features/branch_module/branch/data/services/order_service.dart';
 import 'features/banners/data/repo/banner_repo.dart';
 import 'features/banners/data/repo/banner_repo_impl.dart';
 import 'features/branch_module/branch/data/repo/branch_module_repo.dart';
@@ -39,7 +39,7 @@ Future<void> init() async {
   sl.registerLazySingleton<BranchRepo>(() => BranchRepoImpl(sl()));
   sl.registerLazySingleton<ProductsRepo>(() => ProductsRepoImpl(sl()));
   sl.registerLazySingleton<BannerRepo>(() => BannerRepoImpl(sl()));
-  sl.registerLazySingleton<BranchModuleRepo>(() => BranchModuleRepoImpl());
+  sl.registerLazySingleton<BranchModuleRepo>(() => BranchModuleRepoImpl(sl()));
   sl.registerLazySingleton<BranchCategoriesRepo>(
       () => BranchCategoriesRepoImpl(sl()));
 }

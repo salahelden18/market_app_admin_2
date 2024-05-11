@@ -1,10 +1,11 @@
 import 'dart:convert';
 
-import 'package:market_app_web_2/features/branch_module/branch/data/models/order_model.dart';
+import '../models/order_model.dart';
+import '../models/update_order_real_time_model.dart';
 
-import '../data/models/order_response_model.dart';
-import '../../../../core/constants/endpoint_constants.dart';
-import '../data/models/order_filter_obj.dart';
+import '../models/order_response_model.dart';
+import '../../../../../core/constants/endpoint_constants.dart';
+import '../models/order_filter_obj.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
 class OrderServiceSignalR {
@@ -53,6 +54,23 @@ class OrderServiceSignalR {
         OrderModel orderModel = OrderModel.fromJson(decodedJson);
 
         callback(orderModel);
+      },
+    );
+  }
+
+  void listenForUpdateOrder(Function(UpdateOrderRealTimeModel) callback) {
+    _hubConnection.on(
+      'updateOrder',
+      (arguments) {
+        dynamic ordersJson = arguments![0];
+        var decodedJson = jsonDecode(ordersJson);
+        print(decodedJson);
+        print('********************');
+        print('Update order executed');
+        print('********************');
+        UpdateOrderRealTimeModel updateOrderRealTimeModel =
+            UpdateOrderRealTimeModel.fromJson(decodedJson);
+        callback(updateOrderRealTimeModel);
       },
     );
   }

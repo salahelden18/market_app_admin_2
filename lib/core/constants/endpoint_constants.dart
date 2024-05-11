@@ -5,6 +5,13 @@ class EndpointConstants {
   // real time
   static const String ordersReal = "$_base/orders-hub";
 
+  // orders
+  static const String orderBase = "$_basePath/Order";
+  static const String updateOrder = "$_basePath/Order/update-status";
+
+  // order status
+  static const String orderStatusBase = "$_basePath/OrderStatus";
+
   // authentication
   static const String loginPath = '$_basePath/Account/User/Login';
 

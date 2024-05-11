@@ -31,6 +31,26 @@ class BranchProductModel extends Equatable {
     );
   }
 
+  bool isBranchProductHasDiscount() {
+    return price != null &&
+        discountTypes != null &&
+        discountValue != null &&
+        discountValue != 0.toDouble();
+  }
+
+  double priceAfterDiscount() {
+    if (isBranchProductHasDiscount()) {
+      if (discountTypes == 0) {
+        double discountedPrice = price! * (1 - (discountValue! / 100));
+        return discountedPrice;
+      } else {
+        double discountedPrice = price! - discountValue!;
+        return discountedPrice >= 0 ? discountedPrice : 0;
+      }
+    }
+    return price!;
+  }
+
   @override
   List<Object?> get props => [
         id,

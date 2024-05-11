@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:market_app_web_2/features/branch_module/branch_categories/presentation/model_views/branch_categories/branch_categories_cubit.dart';
-import 'package:market_app_web_2/features/branch_module/branch_categories/presentation/model_views/branch_sub_category/branch_subcategory_cubit.dart';
+import 'features/branch_module/branch/presentation/model_views/order_status/order_status_cubit.dart';
+import 'features/branch_module/branch_categories/presentation/model_views/branch_categories/branch_categories_cubit.dart';
+import 'features/branch_module/branch_categories/presentation/model_views/branch_sub_category/branch_subcategory_cubit.dart';
 import 'features/addresses/presentation/model_view/districts_cubit/district_cubit.dart';
 import 'features/addresses/presentation/model_view/sub_districts_cubit/subdistrict_cubit.dart';
 import 'features/branch/presentation/model_views/branch_cubit/branch_cubit.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => SelectedBranchCubit()),
         BlocProvider(create: (ctx) => BranchCategoriesCubit(di.sl())),
         BlocProvider(create: (ctx) => BranchSubCategoryCubit(di.sl())),
+        BlocProvider(create: (ctx) => OrderStatusCubit(di.sl())),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
