@@ -12,8 +12,7 @@ abstract class HttpFailure {
 }
 
 class ServerHttpFailure extends HttpFailure {
-  const ServerHttpFailure(String message, {String? localizedMessage})
-      : super(message, localizedMessage: localizedMessage);
+  const ServerHttpFailure(super.message);
 }
 
 class InternalAppHttpFailure extends HttpFailure {

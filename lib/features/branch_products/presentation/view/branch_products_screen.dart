@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:market_app_web_2/features/branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/model_view/cubit/branch_products_cubit.dart';
 
 class BranchProductsScreen extends StatefulWidget {
@@ -15,6 +13,7 @@ class BranchProductsScreen extends StatefulWidget {
 class _BranchProductsScreenState extends State<BranchProductsScreen> {
   @override
   void initState() {
+    super.initState();
     if (context.read<BranchProductsCubit>().state
         is! GetBranchProductsSuccessState) {
       context

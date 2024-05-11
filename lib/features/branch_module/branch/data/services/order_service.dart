@@ -64,14 +64,9 @@ class OrderServiceSignalR {
       (arguments) {
         dynamic ordersJson = arguments![0];
         var decodedJson = jsonDecode(ordersJson);
-        print(decodedJson);
-        print('********************');
-        print('Update order executed');
-        print('********************');
+
         UpdateOrderRealTimeModel updateOrderRealTimeModel =
             UpdateOrderRealTimeModel.fromJson(decodedJson);
-        print(updateOrderRealTimeModel);
-        print('here after the fromJosn');
 
         callback(updateOrderRealTimeModel);
       },

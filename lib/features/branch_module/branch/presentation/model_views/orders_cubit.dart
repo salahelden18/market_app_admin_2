@@ -22,7 +22,6 @@ class OrdersCubit extends Cubit<OrderStates> {
   }
 
   Future<void> getOrders(String branchId) async {
-    print('calling get Orders');
     if (isLoading || !hasMore) {
       return;
     }
@@ -70,15 +69,11 @@ class OrdersCubit extends Cubit<OrderStates> {
   }
 
   void listenForUpdateOrder() {
-    print('entered here and started listening for updates');
     _orderServiceSignalR.listenForUpdateOrder(
       (updateOrder) {
-        print(updateOrder);
         // Find the index of the updated order in the list
         int index = orders.indexWhere((order) => order.id == updateOrder.id);
-        print(index);
         if (index != -1) {
-          print('the item is exist');
           final updatedOrder = orders[index].copyWith(
             orderStatusModel: updateOrder.orderStatus,
           );

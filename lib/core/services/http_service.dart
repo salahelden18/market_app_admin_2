@@ -26,12 +26,10 @@ class HttpService extends HttpServiceInterface {
     bool requireToken = true,
   }) async {
     try {
-      print('Entered here the getting categories');
       final urlParsed = Uri.parse('$url${query != null ? '?$query' : ''}');
       print(urlParsed);
       final requestHeaders = await _buildRequestHeader(headers, requireToken);
 
-      print('Here before sending the request');
       final response = await http
           .get(
         urlParsed,
@@ -41,10 +39,6 @@ class HttpService extends HttpServiceInterface {
         throw TimeoutException(
             'Sorry, the operation took too long to complete. Please try again!');
       });
-
-      print('After Sending the request');
-      print(response.body);
-      print(response.statusCode);
 
       if (response.statusCode == 204) {
         return right(null);
@@ -212,14 +206,12 @@ class HttpService extends HttpServiceInterface {
       final request = http.MultipartRequest(method, parsedUrl);
 
       print(parsedUrl);
-      print(fields);
 
       var headers = await _buildRequestHeader({}, true);
 
       for (var header in headers.entries) {
         request.headers[header.key] = header.value;
       }
-      print(fields);
       // Add form fields
       for (var field in fields.entries) {
         //  if the field is file

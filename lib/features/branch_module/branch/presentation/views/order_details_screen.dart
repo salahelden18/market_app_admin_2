@@ -26,7 +26,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     super.didChangeDependencies();
     if (!isExecuted) {
       final orderId = ModalRoute.of(context)?.settings.arguments as String;
-      print(orderId);
       context.read<OrderDetailsCubit>().getOrderDetails(orderId);
       isExecuted = true;
     }
