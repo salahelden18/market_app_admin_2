@@ -11,4 +11,5 @@ abstract class BranchModuleRepo {
   Future<Either<HttpFailure, UpdateOrderModel?>> updateOrderStatus(
       UpdateOrderRequestModel updateOrderRequestModel);
   Future<Either<HttpFailure, List<OrderStatusModel>?>> getOrderStatus();
+  Future<Either<HttpFailure, List<OrderModel>?>> getSearchOrder(int orderId);
 }

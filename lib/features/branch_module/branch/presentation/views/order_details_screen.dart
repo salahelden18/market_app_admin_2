@@ -6,8 +6,8 @@ import 'widgets/order_details/order_products_section.dart';
 import 'widgets/order_details/payment_summary_section.dart';
 import 'widgets/order_details/order_details_address_section.dart';
 import '../../../../../core/widgets/loading_widget.dart';
-import '../model_views/order_details_cubit.dart/order_details_cubit.dart';
-import '../model_views/order_details_cubit.dart/order_details_states.dart';
+import '../model_views/order_details_cubit/order_details_cubit.dart';
+import '../model_views/order_details_cubit/order_details_states.dart';
 import 'widgets/order_details/order_details_section.dart';
 
 class OrderDetailsScreen extends StatefulWidget {

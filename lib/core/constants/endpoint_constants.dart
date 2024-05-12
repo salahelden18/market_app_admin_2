@@ -8,6 +8,7 @@ class EndpointConstants {
   // orders
   static const String orderBase = "$_basePath/Order";
   static const String updateOrder = "$_basePath/Order/update-status";
+  static const String orderSearch = "$_basePath/Order/order-search";
 
   // order status
   static const String orderStatusBase = "$_basePath/OrderStatus";

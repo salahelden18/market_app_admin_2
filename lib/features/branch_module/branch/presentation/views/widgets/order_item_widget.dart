@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../model_views/update_status_cubit/update_order_status_cubit.dart';
 import '../../../../../branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
 import '../../../../../../core/utils/get_order_status_color.dart';
-import '../../model_views/order_details_cubit.dart/order_details_cubit.dart';
 import '../order_details_screen.dart';
 import '../../../../../../core/style/app_colors.dart';
 import '../../../../../../core/utils/format_date.dart';
-import '../../../../../../service_locator.dart';
 import '../../../data/models/order_model.dart';
 import 'order_name_value_widget.dart';
 
@@ -21,18 +18,8 @@ class OrderItemWidget extends StatelessWidget {
     return InkWell(
       splashColor: Colors.transparent,
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            settings: RouteSettings(arguments: order.id),
-            builder: (ctx) => MultiBlocProvider(
-              providers: [
-                BlocProvider(create: (ctx) => UpdateOrderStatusCubit(sl())),
-                BlocProvider(create: (ctx) => OrderDetailsCubit(sl())),
-              ],
-              child: const OrderDetailsScreen(),
-            ),
-          ),
-        );
+        Navigator.of(context)
+            .pushNamed(OrderDetailsScreen.routeName, arguments: order.id);
       },
       child: Container(
         margin: const EdgeInsetsDirectional.symmetric(vertical: 10),
