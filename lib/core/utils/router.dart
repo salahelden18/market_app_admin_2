@@ -5,6 +5,7 @@ import 'package:market_app_web_2/features/branch_module/branch_categories/presen
 import 'package:market_app_web_2/features/branch_module/branch_categories/presentation/views/branch_sub_categories_screen.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/model_view/cubit/branch_products_cubit.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/view/branch_products_screen.dart';
+import 'package:market_app_web_2/features/branch_products/presentation/view/edit_branch_product_screen.dart';
 import '../../features/banners/presentation/model_views/banners_cubit.dart';
 import '../../features/banners/presentation/views/banners_screen.dart';
 import '../../features/branch_module/branch/presentation/views/branch_module_screen.dart';
@@ -108,11 +109,16 @@ Route<dynamic> generateRouter(RouteSettings settings) {
         builder: (ctx) => const BranchSubCategoriesScreen(),
         settings: settings,
       );
+    case EditBranchProductScreen.routeName:
+      return MaterialPageRoute(
+        builder: (ctx) => const EditBranchProductScreen(),
+        settings: settings,
+      );
     case BranchProductsScreen.routeName:
       return MaterialPageRoute(
         builder: (ctx) => BlocProvider(
-          create: (context) => BranchProductsCubit(),
-          child: const BranchProductsScreen(),  
+          create: (context) => BranchProductsCubit(sl()),
+          child: const BranchProductsScreen(),
         ),
         settings: settings,
       );

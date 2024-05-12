@@ -7,14 +7,8 @@ AppBar branchProductsAppBar(BuildContext context) => AppBar(
       actions: [
         // filter branch product button
         IconButton(
-          style: const ButtonStyle(
-            padding: WidgetStatePropertyAll(EdgeInsets.zero),
-          ),
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => const FilterWidget(),
-            );
+            openDialogWithAnimation(context);
           },
           icon: const Icon(
             Icons.tune,
@@ -31,3 +25,16 @@ AppBar branchProductsAppBar(BuildContext context) => AppBar(
         ),
       ],
     );
+
+openDialogWithAnimation(context) {
+  showGeneralDialog(
+    context: context,
+    transitionDuration: const Duration(milliseconds: 200),
+    pageBuilder: (context, animation, secondaryAnimation) => Container(),
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return ScaleTransition(
+          scale: Tween<double>(begin: .5, end: 1).animate(animation),
+          child: const FilterWidget());
+    },
+  );
+}

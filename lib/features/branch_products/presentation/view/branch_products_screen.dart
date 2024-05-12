@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:market_app_web_2/features/branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/model_view/cubit/branch_products_cubit.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/view/widgets/branch_products_app_bar.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/view/widgets/branch_products_grid.dart';
+import '../model_view/cubit/branch_products_state.dart';
+
 class BranchProductsScreen extends StatefulWidget {
   static const String routeName = 'branch-products-screen';
   const BranchProductsScreen({super.key});
@@ -13,21 +16,24 @@ class BranchProductsScreen extends StatefulWidget {
 
 class _BranchProductsScreenState extends State<BranchProductsScreen> {
   final scrollController = PageController();
-
+  bool isExecuted = false;
+  late String branchId;
   @override
-  void initState() {
-    super.initState();
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.offset) {
-        context
-            .read<BranchProductsCubit>()
-            .getBranchProducts(context: context, isFirst: false);
-      }
-    });
-    context
-        .read<BranchProductsCubit>()
-        .getBranchProducts(context: context, isFirst: true);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!isExecuted) {  
+      branchId = context.read<SelectedBranchCubit>().state!.id;
+      scrollController.addListener(() {
+        if (scrollController.position.maxScrollExtent ==
+            scrollController.offset) {
+          context
+              .read<BranchProductsCubit>()
+              .getBranchProducts(branchId, false);
+        }
+      });
+      context.read<BranchProductsCubit>().getBranchProducts(branchId, true);
+      isExecuted = true;
+    }
   }
 
   @override
@@ -39,11 +45,11 @@ class _BranchProductsScreenState extends State<BranchProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: branchProductsAppBar(context) ,
+      appBar: branchProductsAppBar(context),
       body: BlocBuilder<BranchProductsCubit, BranchProductsStates>(
         builder: (context, state) {
           // In the case of success
-          if (state is GetBranchProductsSuccessState) {
+          if (state is BranchProductsSuccessState) {
             return ListView(
               controller: scrollController,
               padding: const EdgeInsetsDirectional.all(10),
@@ -68,7 +74,7 @@ class _BranchProductsScreenState extends State<BranchProductsScreen> {
               ],
             );
             // In the case of error
-          } else if (state is GetBranchProductsErrorState) {
+          } else if (state is BranchProductsErrorState) {
             return Text(state.errorMessage);
           } else {
             // In the case of loading

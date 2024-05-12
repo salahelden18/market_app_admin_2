@@ -1,65 +1,70 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:market_app_web_2/core/models/pagination_model.dart';
-import 'package:market_app_web_2/features/branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
-import 'package:market_app_web_2/features/branch_products/data/models/branch_product_model.dart';
-import 'package:market_app_web_2/features/branch_products/data/repos/branch_product_repo_impl.dart';
-import 'package:market_app_web_2/features/products/data/models/product_filter_model.dart';
-import 'package:market_app_web_2/service_locator.dart';
-
-part 'branch_products_state.dart';
+import '../../../data/repos/branch_product_repo.dart';
+import '../../../data/models/branch_product_model.dart';
+import '../../../../products/data/models/product_filter_model.dart';
+import 'branch_products_state.dart';
 
 class BranchProductsCubit extends Cubit<BranchProductsStates> {
-  BranchProductsCubit() : super(BranchProductsStates());
+  BranchProductsCubit(this._branchProductRepo)
+      : super(BranchProductsInitialState());
 
-  final BranchProductRepoImpl _branchProductRepoImpl =
-      BranchProductRepoImpl(sl());
+  final BranchProductsRpo _branchProductRepo;
+
   ProductFilterModel productFilterModel = const ProductFilterModel();
   bool hasMore = true;
+  bool isLoading = false;
   List<BranchProductModel> branchProducts = [];
 
-  getBranchProducts({
-    required BuildContext context,
-    required bool isFirst,
-    String? categoryId,
-    String? subCategoryId,
-    bool isFilter = false,
-  }) async {
-    if (!hasMore) {
-      print('<<<<<<<<< No More Branch Products >>>>>>>>>');
+  getBranchProducts(
+    String branchId,
+    bool isFirst,
+  ) async {
+    if (isLoading || !hasMore) {
       return;
     }
-    if (isFirst) {
-      emit(GetBranchProductsLoadingState());
-    }
-    // Filter products
-    if (isFilter) {
-      branchProducts.clear();
-    }
 
-    productFilterModel.copyWith(
-      categoryId: categoryId,
-      subCategoryId: subCategoryId,
-    );
+    if (isFirst) {
+      emit(BranchProductsLoadingState());
+    }
 
     // Fetching data
-    var result = await _branchProductRepoImpl.getBranchProducts(
-        context.read<SelectedBranchCubit>().state!.id,
-        productFilterModel.toQueryString());
+    var result = await _branchProductRepo.getBranchProducts(
+        branchId, productFilterModel.toQueryString());
 
-    result.fold((l) => GetBranchProductsErrorState(l.message), (r) {
-      productFilterModel.copyWith(
-        page: productFilterModel.page + 1,
-      );
-      hasMore = r!.paginationModel.hasNextPage;
-      branchProducts = List<BranchProductModel>.from(branchProducts)
-        ..addAll(r.branchProducts);
-      emit(GetBranchProductsSuccessState(branchProducts, r.paginationModel));
-    });
+    result.fold(
+      (l) => BranchProductsErrorState(l.message),
+      (r) {
+        productFilterModel =
+            productFilterModel.copyWith(page: productFilterModel.page + 1);
+
+        hasMore = r!.paginationModel.hasNextPage;
+
+        branchProducts = List<BranchProductModel>.from(branchProducts)
+          ..addAll(r.branchProducts);
+        emit(BranchProductsSuccessState(branchProducts, r.paginationModel));
+      },
+    );
   }
 
-  resetState() {
-    emit(BranchProductsStates());
+  editBranchProduct({
+    required String branchId,
+    required int branchProductId,
+    required int stock,
+    required double price,
+    required int discountTypes,
+    required double discountValue,
+  }) async {
+    emit(BranchProductsLoadingState());
+
+    // The result
+    var result = await _branchProductRepo.editBranchProduct(
+        branchProductId: branchProductId,
+        stock: stock,
+        price: price,
+        discountTypes: discountTypes,
+        discountValue: discountValue);
+    result.fold((l) => BranchProductsErrorState(l.message), (r) {
+      getBranchProducts(branchId, true);
+    });
   }
 }

@@ -1,19 +1,31 @@
-part of 'branch_products_cubit.dart';
+import 'package:equatable/equatable.dart';
+
+import '../../../../../core/models/pagination_model.dart';
+import '../../../data/models/branch_product_model.dart';
 
 class BranchProductsStates extends Equatable {
   @override
   List<Object> get props => [];
+
+  const BranchProductsStates();
 }
 
-class GetBranchProductsLoadingState extends BranchProductsStates {}
+class BranchProductsInitialState extends BranchProductsStates {}
 
-class GetBranchProductsSuccessState extends BranchProductsStates {
-  final List<BranchProductModel> branchProducts;  
+class BranchProductsLoadingState extends BranchProductsStates {}
+
+class BranchProductsSuccessState extends BranchProductsStates {
+  final List<BranchProductModel> branchProducts;
   final PaginationModel paginationModel;
-  GetBranchProductsSuccessState(this.branchProducts, this.paginationModel);
+  const BranchProductsSuccessState(this.branchProducts, this.paginationModel);
+  @override
+  List<Object> get props => [paginationModel, branchProducts];
 }
 
-class GetBranchProductsErrorState extends BranchProductsStates {
+class BranchProductsErrorState extends BranchProductsStates {
   final String errorMessage;
-  GetBranchProductsErrorState(this.errorMessage);
+  const BranchProductsErrorState(this.errorMessage);
+
+  @override
+  List<Object> get props => [errorMessage];
 }
