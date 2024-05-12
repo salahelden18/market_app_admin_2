@@ -18,18 +18,17 @@ class _BranchProductsGridState extends State<BranchProductsGrid> {
   @override
   Widget build(BuildContext context) {
     final branchProductsCubit = context.watch<BranchProductsCubit>();
-
     return Padding(
       padding: const EdgeInsetsDirectional.symmetric(vertical: 10),
-      child: ListView.builder(
+      child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        //   crossAxisCount: 2,
-        //   mainAxisSpacing: 15,
-        //   crossAxisSpacing: 15,
-        //   mainAxisExtent: 220,
-        // ),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 15,
+          crossAxisSpacing: 15,
+          mainAxisExtent: 220,
+        ),
         itemBuilder: (context, index) => ProductItemWidget(
           productModel: branchProductsCubit.branchProducts[index].product!,
         ),

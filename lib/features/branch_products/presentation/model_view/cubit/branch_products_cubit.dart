@@ -19,7 +19,7 @@ class BranchProductsCubit extends Cubit<BranchProductsStates> {
   bool hasMore = true;
   List<BranchProductModel> branchProducts = [];
 
-  Future getBranchProducts({
+  getBranchProducts({
     required BuildContext context,
     required bool isFirst,
     String? categoryId,
@@ -53,8 +53,9 @@ class BranchProductsCubit extends Cubit<BranchProductsStates> {
         page: productFilterModel.page + 1,
       );
       hasMore = r!.paginationModel.hasNextPage;
-      branchProducts.addAll(r.branchProducts);
-      emit(GetBranchProductsSuccessState(branchProducts,r.paginationModel));
+      branchProducts = List<BranchProductModel>.from(branchProducts)
+        ..addAll(r.branchProducts);
+      emit(GetBranchProductsSuccessState(branchProducts, r.paginationModel));
     });
   }
 

@@ -10,7 +10,7 @@ class ProductFilterModel extends Equatable {
     this.categoryId,
     this.subCategoryId,
     this.page = 1,
-    this.pageSize = 12,
+    this.pageSize = 5,
   });
 
   ProductFilterModel copyWith({

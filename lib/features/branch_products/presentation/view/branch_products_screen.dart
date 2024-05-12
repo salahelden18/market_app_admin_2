@@ -41,45 +41,34 @@ class _BranchProductsScreenState extends State<BranchProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(title: const Text('Branch Products')),
       body: BlocBuilder<BranchProductsCubit, BranchProductsStates>(
         builder: (context, state) {
           // In the case of success
           if (state is GetBranchProductsSuccessState) {
-            return Padding(
-              padding: const EdgeInsets.all(10),
-              child: ListView(
-                controller: scrollController,
-                children: [
-                  Text(
-                    'Result (${state.branchProducts.length})',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+            return ListView(
+              controller: scrollController,
+              padding: const EdgeInsetsDirectional.all(10),
+              children: [
+                // The total results
+                Text(
+                  'Result (${state.paginationModel.totalCount})',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsetsDirectional.symmetric(vertical: 20),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) => ProductItemWidget(
-                        productModel: state.branchProducts[index].product!,
-                      ),
-                      itemCount: state.branchProducts.length,
-                    ),
-                  ),
-                  if (state.paginationModel.hasNextPage)
-                    const Center(
-                        child: Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Text('Loading....'),
-                    )),
-                ],
-              ),
+                ),
+                // The products list
+                const BranchProductsGrid(),
+                // The loading widget
+                if (state.paginationModel.hasNextPage)
+                  const Center(
+                      child: Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Text('Loading....'),
+                  )),
+              ],
             );
             // In the case of error
           } else if (state is GetBranchProductsErrorState) {
