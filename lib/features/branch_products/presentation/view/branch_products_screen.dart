@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/model_view/cubit/branch_products_cubit.dart';
+import 'package:market_app_web_2/features/branch_products/presentation/view/widgets/branch_products_app_bar.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/view/widgets/branch_products_grid.dart';
-import 'package:market_app_web_2/features/products/data/models/product_model.dart';
-import 'package:market_app_web_2/features/products/presentation/views/widgets/product_item_widget.dart';
-import 'package:market_app_web_2/features/products/presentation/views/widgets/total_products_result_widget.dart';
-
 class BranchProductsScreen extends StatefulWidget {
   static const String routeName = 'branch-products-screen';
   const BranchProductsScreen({super.key});
@@ -42,7 +39,7 @@ class _BranchProductsScreenState extends State<BranchProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Branch Products')),
+      appBar: branchProductsAppBar(context) ,
       body: BlocBuilder<BranchProductsCubit, BranchProductsStates>(
         builder: (context, state) {
           // In the case of success
