@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../data/models/update_order_request_model.dart';
 import '../../../../../../../core/utils/dialog_manager_overlay.dart';
 import '../../../../../../../core/utils/show_toast.dart';
-import '../../../model_views/order_details_cubit.dart/order_details_cubit.dart';
+import '../../../model_views/order_details_cubit/order_details_cubit.dart';
 import '../../../model_views/update_status_cubit/update_order_status_cubit.dart';
 import '../../../model_views/update_status_cubit/update_order_status_states.dart';
 import '../../../../../../../core/widgets/filled_button_widget.dart';

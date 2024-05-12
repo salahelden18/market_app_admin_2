@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:market_app_web_2/features/branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
-import 'package:market_app_web_2/features/branch_module/branch/presentation/model_views/orders_cubit.dart';
+import '../../../../../branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
+import '../../model_views/orders_cubit.dart';
 import '../../../../../../core/models/pagination_model.dart';
 
 import '../../../data/models/order_model.dart';

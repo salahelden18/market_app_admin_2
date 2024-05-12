@@ -42,4 +42,15 @@ class BranchModuleRepoImpl implements BranchModuleRepo {
       ),
     );
   }
+
+  @override
+  Future<Either<HttpFailure, List<OrderModel>?>> getSearchOrder(
+      int orderId) async {
+    return await _httpServiceInterface.get(
+      url: '${EndpointConstants.orderSearch}/$orderId',
+      fromJson: (decodedJson) => List<OrderModel>.from(
+        decodedJson.map((e) => OrderModel.fromJson(e)),
+      ),
+    );
+  }
 }

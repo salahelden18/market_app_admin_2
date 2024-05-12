@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'order_search_screen.dart';
 import 'widgets/orders_main_section.dart';
 import '../../../../../core/widgets/loading_widget.dart';
 import '../model_views/orders_state.dart';
@@ -43,6 +44,14 @@ class _BranchModuleScreenState extends State<BranchModuleScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(branch.state?.enName ?? 'Branch'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(OrderSearchScreen.routeName);
+            },
+            icon: const Icon(Icons.search),
+          ),
+        ],
       ),
       drawer: const BranchModuleDrawerWidget(),
       body: BlocBuilder<OrdersCubit, OrderStates>(
