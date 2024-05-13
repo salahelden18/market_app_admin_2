@@ -21,7 +21,7 @@ class _BranchProductsScreenState extends State<BranchProductsScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!isExecuted) {  
+    if (!isExecuted) {
       branchId = context.read<SelectedBranchCubit>().state!.id;
       scrollController.addListener(() {
         if (scrollController.position.maxScrollExtent ==

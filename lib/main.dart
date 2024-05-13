@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:market_app_web_2/features/branch_module/branch/presentation/model_views/order_details_cubit/order_details_cubit.dart';
 import 'package:market_app_web_2/features/branch_module/branch/presentation/model_views/update_status_cubit/update_order_status_cubit.dart';
+import 'package:market_app_web_2/features/branch_products/presentation/view/unaddedProducts_branch_product_screen.dart';
 import 'core/services/navigator_observer.dart';
 import 'features/branch_module/branch/presentation/model_views/order_status/order_status_cubit.dart';
 import 'features/branch_module/branch_categories/presentation/model_views/branch_categories/branch_categories_cubit.dart';
@@ -74,7 +75,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: appTheme,
         onGenerateRoute: generateRouter,
-        home: const SplashScreen(),
+        // home: const SplashScreen(),
+        home: const UnAddedProductsScreen(),
       ),
     );
   }

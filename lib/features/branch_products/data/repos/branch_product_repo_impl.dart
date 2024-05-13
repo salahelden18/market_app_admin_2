@@ -5,6 +5,7 @@ import 'package:market_app_web_2/core/services/http_service_interface.dart';
 import 'package:market_app_web_2/features/branch_products/data/models/all_branch_products_model.dart';
 import 'package:market_app_web_2/features/branch_products/data/models/branch_product_model.dart';
 import 'package:market_app_web_2/features/branch_products/data/models/branch_product_request_model.dart';
+import 'package:market_app_web_2/features/branch_products/data/models/main_product_model.dart';
 import 'package:market_app_web_2/features/branch_products/data/repos/branch_product_repo.dart';
 
 class BranchProductRepoImpl extends BranchProductsRpo {
@@ -29,6 +30,16 @@ class BranchProductRepoImpl extends BranchProductsRpo {
       url: EndpointConstants.editbranchProducts(branchProductId),
       body: branchProductRequestModel.toJson(),
       fromJson: (decodedJson) => BranchProductModel.fromJson(decodedJson),
+    );
+  }
+
+  @override
+  Future<Either<HttpFailure, List<MainProductModel>?>> getUnAddedProducts(
+      String branchId) {
+    return _httpServiceInterface.get(
+      url: EndpointConstants.getUnAddedProducts(branchId),
+      fromJson: (d) => List<MainProductModel>.from(
+          d.map((e) => MainProductModel.fromJson(e))),
     );
   }
 }

@@ -45,6 +45,8 @@ class EndpointConstants {
       "$_basePath/BranchProduct/$branchId";
   static String editbranchProducts(int branchProductId) =>
       "$_basePath/BranchProduct/$branchProductId";
+  static String getUnAddedProducts(String branchId) =>
+      "$_basePath/BranchProduct/missing-products/$branchId";
 
   // product
   static const String product = "$_basePath/Product";

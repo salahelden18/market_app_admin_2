@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:market_app_web_2/core/style/app_colors.dart';
+import 'package:market_app_web_2/features/branch_products/presentation/view/unaddedProducts_branch_product_screen.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/view/widgets/filter_widget.dart';
 
 AppBar branchProductsAppBar(BuildContext context) => AppBar(
@@ -17,7 +18,9 @@ AppBar branchProductsAppBar(BuildContext context) => AppBar(
         ),
         // Add a new branch product button
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, UnAddedProductsScreen.routeName);
+          },
           icon: const Icon(
             Icons.add,
             color: AppColors.white,
