@@ -1,4 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../core/models/pagination_model.dart';
+import '../../../../../core/utils/show_toast.dart';
+import '../../../data/models/branch_product_request_model.dart';
+import '../../../../../main.dart';
 import '../../../data/repos/branch_product_repo.dart';
 import '../../../data/models/branch_product_model.dart';
 import '../../../../products/data/models/product_filter_model.dart';
@@ -46,25 +50,32 @@ class BranchProductsCubit extends Cubit<BranchProductsStates> {
     );
   }
 
-  editBranchProduct({
-    required String branchId,
-    required int branchProductId,
-    required int stock,
-    required double price,
-    required int discountTypes,
-    required double discountValue,
-  }) async {
-    emit(BranchProductsLoadingState());
-
-    // The result
+  Future<bool> editBranchProduct(
+    int branchProductId,
+    BranchProductRequestModel branchProductRequestModel,
+  ) async {
     var result = await _branchProductRepo.editBranchProduct(
-        branchProductId: branchProductId,
-        stock: stock,
-        price: price,
-        discountTypes: discountTypes,
-        discountValue: discountValue);
-    result.fold((l) => BranchProductsErrorState(l.message), (r) {
-      getBranchProducts(branchId, true);
-    });
+        branchProductId, branchProductRequestModel);
+
+    return result.fold(
+      (l) {
+        showToast(context: navigatorKey.currentState!.context, msg: l.message);
+        return false;
+      },
+      (r) {
+        if (state is BranchProductsSuccessState) {
+          branchProducts = branchProducts
+              .map((e) => e.id == branchProductId ? r! : e)
+              .toList();
+
+          PaginationModel paginationModel =
+              (state as BranchProductsSuccessState).paginationModel;
+
+          emit(BranchProductsSuccessState(branchProducts, paginationModel));
+          return true;
+        }
+        return false;
+      },
+    );
   }
 }

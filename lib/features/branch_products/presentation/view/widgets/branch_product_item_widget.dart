@@ -4,6 +4,7 @@ import 'package:market_app_web_2/core/style/app_colors.dart';
 import 'package:market_app_web_2/core/style/font_style.dart';
 import 'package:market_app_web_2/features/branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
 import 'package:market_app_web_2/features/branch_products/data/models/branch_product_model.dart';
+import 'package:market_app_web_2/features/branch_products/presentation/model_view/cubit/branch_products_cubit.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/view/edit_branch_product_screen.dart';
 
 class BranchProductItemWidget extends StatelessWidget {
@@ -17,7 +18,7 @@ class BranchProductItemWidget extends StatelessWidget {
         Navigator.pushNamed(
           context,
           EditBranchProductScreen.routeName,
-          arguments: branchProductModel,
+          arguments: [branchProductModel, context.read<BranchProductsCubit>()],
         );
       },
       child: Stack(

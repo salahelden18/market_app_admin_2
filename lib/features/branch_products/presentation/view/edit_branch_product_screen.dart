@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:market_app_web_2/core/style/app_colors.dart';
-import 'package:market_app_web_2/core/widgets/loading_widget.dart';
-import 'package:market_app_web_2/core/widgets/my_main_button.dart';
-import 'package:market_app_web_2/core/widgets/text_form_field_widget.dart';
-import 'package:market_app_web_2/features/branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
-import 'package:market_app_web_2/features/branch_products/data/models/branch_product_model.dart';
-import 'package:market_app_web_2/features/branch_products/presentation/model_view/cubit/branch_products_cubit.dart';
-import 'package:market_app_web_2/features/branch_products/presentation/model_view/cubit/branch_products_state.dart';
-import 'package:market_app_web_2/service_locator.dart';
+import '../../../../core/utils/dialog_manager_overlay.dart';
+import '../../../branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
+import '../../data/models/branch_product_request_model.dart';
+import '../model_view/cubit/branch_products_cubit.dart';
+import '../../../../core/widgets/add_button_navigation_bar.dart';
+import '../../../addresses/presentation/views/widgets/dropdown_button_form_field_widget.dart';
+import '../../../../core/widgets/text_form_field_widget.dart';
+import '../../data/models/branch_product_model.dart';
 
 class EditBranchProductScreen extends StatefulWidget {
-  static const routeName = 'edit-branch-product-screen';
+  static const routeName = '/edit-branch-product-screen';
   const EditBranchProductScreen({super.key});
 
   @override
@@ -20,24 +20,32 @@ class EditBranchProductScreen extends StatefulWidget {
 }
 
 class _EditBranchProductScreenState extends State<EditBranchProductScreen> {
-  BranchProductModel? branchProductModel;
-  final _formKey = GlobalKey<FormState>();
   final TextEditingController stockController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController discountValueController = TextEditingController();
   int? discountTypes;
 
+  BranchProductModel? branchProductModel;
+  late String branchId;
+  List<dynamic> arguments = [];
+  late BranchProductsCubit branchProductsCubit;
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    branchProductModel =
-        ModalRoute.of(context)!.settings.arguments as BranchProductModel;
+
+    branchId = context.read<SelectedBranchCubit>().state!.id;
+    arguments = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+    branchProductModel = arguments[0] as BranchProductModel?;
+    branchProductsCubit = arguments[1];
 
     if (branchProductModel != null) {
-      stockController.text = branchProductModel!.stock.toString() ?? '';
-      priceController.text = branchProductModel!.price.toString() ?? '';
+      stockController.text = branchProductModel?.stock?.toString() ?? '';
+      priceController.text = branchProductModel?.price?.toString() ?? '';
       discountValueController.text =
-          branchProductModel!.discountValue.toString() ?? '';
+          branchProductModel?.discountValue?.toString() ?? '';
       discountTypes = branchProductModel!.discountTypes;
     } else {
       Navigator.pop(context);
@@ -46,100 +54,93 @@ class _EditBranchProductScreenState extends State<EditBranchProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Edit Branch Product')),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsetsDirectional.all(10),
-          children: [
-            const SizedBox(height: 10),
-            TextFormFieldWidget(
+    return BlocProvider.value(
+      value: branchProductsCubit,
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Edit Branch Product')),
+        body: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsetsDirectional.all(10),
+            children: [
+              const SizedBox(height: 20),
+              TextFormFieldWidget(
                 textInputType: TextInputType.number,
                 controller: stockController,
-                label: 'Stock'),
-            const SizedBox(height: 10),
-            TextFormFieldWidget(
+                label: 'Stock',
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*$')),
+                ],
+              ),
+              const SizedBox(height: 20),
+              TextFormFieldWidget(
                 textInputType: TextInputType.number,
                 controller: priceController,
-                label: 'Price'),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                    child: Container(
-                        padding: const EdgeInsetsDirectional.all(5),
-                        height: 55,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          border: Border.all(color: AppColors.primaryColor),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: DropdownButton<int>(
-                            value: discountTypes,
-                            hint: branchProductModel!.discountTypes == 1
-                                ? const Text('Persentage %')
-                                : const Text('Discount -'),
-                            items: const [
-                              DropdownMenuItem<int>(
-                                  value: 1, child: Text('Persentage %')),
-                              DropdownMenuItem<int>(
-                                  value: 0, child: Text('Discount -')),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                discountTypes = value;
-                              });
-                            }))),
-                const SizedBox(width: 7),
-                Expanded(
-                    child: TextFormFieldWidget(
-                        textInputType: TextInputType.number,
-                        controller: discountValueController,
-                        label: 'Discount Value')),
-              ],
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: BlocProvider(
-            create: (context) => BranchProductsCubit(sl()),
-            child: BlocConsumer<BranchProductsCubit, BranchProductsStates>(
-              listener: (context, state) {
-                if (state is BranchProductsSuccessState) {
-                  Navigator.pop(context);
-                }
-              },
-              builder: (ctx, state) {
-                final branchProductsCubit = ctx.watch<BranchProductsCubit>();
-
-                return state is BranchProductsLoadingState
-                    ? const LoadingWidget()
-                    : MyMainButton(
-                        context: ctx,
-                        onTap: () {
-                          if (_formKey.currentState!.validate()) {
-                            branchProductsCubit.editBranchProduct(
-                              branchId:
-                                  ctx.read<SelectedBranchCubit>().state!.id,
-                              branchProductId: branchProductModel!.id,
-                              stock: int.parse(stockController.text),
-                              price: double.parse(priceController.text),
-                              discountTypes: discountTypes!,
-                              discountValue:
-                                  double.parse(discountValueController.text),
-                            );
-                          }
-                        },
-                        title: 'Edit',
-                      );
-              },
-            ),
+                label: 'Price',
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                ],
+              ),
+              const SizedBox(height: 20),
+              DropdownButtonFormFieldWidget<int>(
+                  selectedValue: discountTypes,
+                  hint: 'Select Discount Type',
+                  items: const [
+                    DropdownMenuItem<int>(
+                      value: 1,
+                      child: Text('Persentage %'),
+                    ),
+                    DropdownMenuItem<int>(
+                      value: 0,
+                      child: Text('Discount -'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      discountTypes = value;
+                    });
+                  }),
+              const SizedBox(height: 20),
+              TextFormFieldWidget(
+                textInputType: TextInputType.number,
+                controller: discountValueController,
+                label: 'Discount Value',
+              ),
+            ],
           ),
         ),
+        bottomNavigationBar: Builder(builder: (context) {
+          return AddButtonNavigationBarWidget(
+            ontap: () async {
+              final isValid = _formKey.currentState!.validate();
+
+              if (!isValid) {
+                return;
+              }
+              DialogManagerOverlay.showDialogWithMessage(context);
+
+              final result =
+                  await context.read<BranchProductsCubit>().editBranchProduct(
+                        branchProductModel!.id,
+                        BranchProductRequestModel(
+                          discountTypes: discountTypes,
+                          discountValue:
+                              double.tryParse(discountValueController.text),
+                          price: double.tryParse(priceController.text) ?? 0.0,
+                          stock: int.tryParse(stockController.text) ?? 0,
+                        ),
+                      );
+
+              DialogManagerOverlay.closeDialog();
+
+              if (result) {
+                // ignore: use_build_context_synchronously
+                Navigator.pop(context);
+              }
+            },
+            title: 'Edit',
+          );
+        }),
       ),
     );
   }

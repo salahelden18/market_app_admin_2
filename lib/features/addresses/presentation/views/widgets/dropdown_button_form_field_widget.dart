@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:market_app_web_2/core/style/app_colors.dart';
+import '../../../../../core/style/app_colors.dart';
 
-class DropdownButtonFormFieldWidget extends StatelessWidget {
+class DropdownButtonFormFieldWidget<T> extends StatelessWidget {
   const DropdownButtonFormFieldWidget({
     super.key,
     required this.items,
@@ -10,15 +10,15 @@ class DropdownButtonFormFieldWidget extends StatelessWidget {
     this.selectedValue,
     required this.hint,
   });
-  final List<DropdownMenuItem> items;
+  final List<DropdownMenuItem<T>> items;
   final void Function(dynamic)? onChanged;
   final String? Function(dynamic)? validator;
-  final String? selectedValue;
+  final T? selectedValue;
   final String hint;
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField(
+    return DropdownButtonFormField<T>(
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
