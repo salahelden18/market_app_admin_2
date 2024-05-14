@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:market_app_web_2/core/style/font_style.dart';
-import 'package:market_app_web_2/features/branch_products/data/models/main_product_model.dart';
-import 'package:market_app_web_2/features/branch_products/presentation/view/add_product_branch_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:market_app_web_2/features/branch_products/presentation/model_view/unadded_products_cubit/unadded_products_cubit.dart';
+import '../../../../../core/style/font_style.dart';
+import '../../../data/models/unadded_product_model.dart';
+import '../add_product_branch_screen.dart';
 
 class UnAddedProductItemWidget extends StatelessWidget {
   const UnAddedProductItemWidget({super.key, required this.model});
 
-  final MainProductModel model;
+  final UnAddedProductModel model;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, AddProductBranchScreen.routeName);
+        Navigator.pushNamed(context, AddProductBranchScreen.routeName,
+            arguments: [model.id, context.read<UnAddedProductsCubit>()]);
       },
       child: Container(
         padding: const EdgeInsets.all(10),
@@ -23,7 +26,7 @@ class UnAddedProductItemWidget extends StatelessWidget {
             BoxShadow(
               offset: Offset(0, 1),
               color: Colors.black12,
-              blurRadius: 2,    
+              blurRadius: 2,
               spreadRadius: 3,
             )
           ],
@@ -31,9 +34,9 @@ class UnAddedProductItemWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (model.images!.isNotEmpty)
+            if (model.images.isNotEmpty)
               Image.network(
-                model.images![0],
+                model.images[0],
                 height: 80,
               ),
             const SizedBox(height: 5),

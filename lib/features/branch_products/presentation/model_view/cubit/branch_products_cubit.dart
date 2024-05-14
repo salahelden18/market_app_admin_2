@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:market_app_web_2/features/branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
 import '../../../../../core/models/pagination_model.dart';
 import '../../../../../core/utils/show_toast.dart';
 import '../../../data/models/branch_product_request_model.dart';
@@ -79,15 +77,5 @@ class BranchProductsCubit extends Cubit<BranchProductsStates> {
         return false;
       },
     );
-  }
-
-  getUnAddedProducts(BuildContext context) async {
-    emit(UnAddedProductsLoadingState());
-
-    var result = await _branchProductRepo
-        .getUnAddedProducts(context.read<SelectedBranchCubit>().state!.id);
-
-    result.fold((l) => emit(UnAddedProductsErrorState(l.message)),
-        (r) => emit(UnAddedProductsSuccessState(r!)));
   }
 }

@@ -6,8 +6,9 @@ import 'package:market_app_web_2/features/branch_module/branch/presentation/view
 import 'package:market_app_web_2/features/branch_module/branch_categories/presentation/views/branch_categories_screen.dart';
 import 'package:market_app_web_2/features/branch_module/branch_categories/presentation/views/branch_sub_categories_screen.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/model_view/cubit/branch_products_cubit.dart';
+import 'package:market_app_web_2/features/branch_products/presentation/model_view/unadded_products_cubit/unadded_products_cubit.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/view/add_product_branch_screen.dart';
-import 'package:market_app_web_2/features/branch_products/presentation/view/unaddedProducts_branch_product_screen.dart';
+import 'package:market_app_web_2/features/branch_products/presentation/view/unadded_products_branch_product_screen.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/view/branch_products_screen.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/view/edit_branch_product_screen.dart';
 import '../../features/banners/presentation/model_views/banners_cubit.dart';
@@ -138,7 +139,10 @@ Route<dynamic> generateRouter(RouteSettings settings) {
       );
     case UnAddedProductsScreen.routeName:
       return MaterialPageRoute(
-        builder: (ctx) => const UnAddedProductsScreen(),
+        builder: (ctx) => BlocProvider(
+          create: (ctx) => UnAddedProductsCubit(sl()),
+          child: const UnAddedProductsScreen(),
+        ),
         settings: settings,
       );
     case AddProductBranchScreen.routeName:
