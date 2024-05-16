@@ -7,16 +7,15 @@ class AddBranchProductModel extends Equatable {
   final double price;
   final int? discountTypes;
   final double? discountValue;
-  final int branchSubCategoryId;
 
-  const AddBranchProductModel(
-      {required this.productId,
-      required this.branchId,
-      required this.stock,
-      required this.price,
-      required this.discountTypes,
-      required this.discountValue,
-      required this.branchSubCategoryId});
+  const AddBranchProductModel({
+    required this.productId,
+    required this.branchId,
+    required this.stock,
+    required this.price,
+    required this.discountTypes,
+    required this.discountValue,
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -25,7 +24,6 @@ class AddBranchProductModel extends Equatable {
       "price": price,
       "discountValue": discountValue,
       "discountTypes": discountTypes,
-      "branchSubCategoryId": branchSubCategoryId,
       "branchId": branchId,
     }..removeWhere((key, value) => value == null);
   }
@@ -38,6 +36,5 @@ class AddBranchProductModel extends Equatable {
         price,
         discountTypes,
         discountValue,
-        branchSubCategoryId,
       ];
 }

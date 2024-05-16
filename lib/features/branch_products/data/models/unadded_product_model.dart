@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:market_app_web_2/features/categories/data/models/category_response_model.dart';
+import 'package:market_app_web_2/features/categories/data/models/subcategory_response.dart';
 
 class UnAddedProductModel extends Equatable {
   final String id;
@@ -6,6 +8,8 @@ class UnAddedProductModel extends Equatable {
   final String? trName;
   final String? arName;
   final List<String> images;
+  final CategoryResponseModel? category;
+  final SubCategoryResponseModel? subCategory;
 
   const UnAddedProductModel({
     required this.id,
@@ -13,6 +17,8 @@ class UnAddedProductModel extends Equatable {
     this.trName,
     this.arName,
     required this.images,
+    this.category,
+    this.subCategory,
   });
 
   factory UnAddedProductModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +28,12 @@ class UnAddedProductModel extends Equatable {
       trName: json['trName'],
       arName: json['arName'],
       images: List<String>.from(json['images']),
+      category: json['category'] != null
+          ? CategoryResponseModel.fromJson(json['category'])
+          : null,
+      subCategory: json['subCategory'] != null
+          ? SubCategoryResponseModel.fromJson(json['subCategory'])
+          : null,
     );
   }
 
@@ -32,5 +44,7 @@ class UnAddedProductModel extends Equatable {
         trName,
         arName,
         images,
+        category,
+        subCategory,
       ];
 }

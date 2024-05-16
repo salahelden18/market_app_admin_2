@@ -6,13 +6,8 @@ import '../../../../core/utils/show_toast.dart';
 import '../model_view/add_branch_product_cubit/add_branch_product_cubit.dart';
 import '../model_view/add_branch_product_cubit/add_branch_product_states.dart';
 import '../../../../service_locator.dart';
-import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/utils/dialog_manager_overlay.dart';
 import '../../../branch/presentation/model_views/selected_branch/selected_branch_cubit.dart';
-import '../../../branch_module/branch_categories/presentation/model_views/branch_categories/branch_categories_cubit.dart';
-import '../../../branch_module/branch_categories/presentation/model_views/branch_categories/branch_categories_states.dart';
-import '../../../branch_module/branch_categories/presentation/model_views/branch_sub_category/branch_subcategory_cubit.dart';
-import '../../../branch_module/branch_categories/presentation/model_views/branch_sub_category/branch_subcategory_states.dart';
 import '../../../../core/widgets/add_button_navigation_bar.dart';
 import '../../../../core/widgets/text_form_field_widget.dart';
 import '../../../addresses/presentation/views/widgets/dropdown_button_form_field_widget.dart';
@@ -39,13 +34,6 @@ class _AddProductBranchScreenState extends State<AddProductBranchScreen> {
   late UnAddedProductsCubit unAddedProductsCubit;
 
   @override
-  void initState() {
-    super.initState();
-    final branchId = context.read<SelectedBranchCubit>().state!.id;
-    context.read<BranchCategoriesCubit>().getBranchCategories(branchId);
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!isExecuted) {
@@ -68,8 +56,6 @@ class _AddProductBranchScreenState extends State<AddProductBranchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final branchCategories = context.watch<BranchCategoriesCubit>();
-    final branchSubCategories = context.watch<BranchSubCategoryCubit>();
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (ctx) => AddBranchProductCubit(sl())),
@@ -79,120 +65,68 @@ class _AddProductBranchScreenState extends State<AddProductBranchScreen> {
         appBar: AppBar(title: const Text('Add Branch Product')),
         body: Form(
           key: _formKey,
-          child: branchCategories.state is BranchCategoriesLoadingState
-              ? const LoadingWidget()
-              : ListView(
-                  padding: const EdgeInsetsDirectional.all(10),
-                  children: [
-                    if (branchCategories.state is BranchCategoriesSuccessState)
-                      DropdownButtonFormFieldWidget(
-                        hint: 'Branch Category',
-                        items: (branchCategories.state
-                                as BranchCategoriesSuccessState)
-                            .branchCategories
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e.id,
-                                child: Text(e.category?.enName ?? ''),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) async {
-                          branchCategoryId = value;
-                          DialogManagerOverlay.showDialogWithMessage(context);
-                          await context
-                              .read<BranchSubCategoryCubit>()
-                              .getBranchSubcategories(value);
-                          DialogManagerOverlay.closeDialog();
-                        },
-                      ),
-                    const SizedBox(height: 10),
-                    if (branchCategoryId != null &&
-                        branchSubCategories.state
-                            is BranchSubCategorySuccessState)
-                      DropdownButtonFormFieldWidget(
-                        hint: 'Branch Sub Category',
-                        items: (branchSubCategories.state
-                                as BranchSubCategorySuccessState)
-                            .branchSubcategoreis
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e.id,
-                                child: Text(e.subCategory.enName ?? ''),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) async {
-                          setState(() {
-                            branchSubCategoryId = value;
-                          });
-                        },
-                      ),
-                    const SizedBox(height: 10),
-                    if (branchSubCategoryId != null)
-                      Column(
-                        children: [
-                          TextFormFieldWidget(
-                            textInputType: TextInputType.number,
-                            controller: stockController,
-                            label: 'Stock',
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter value for stock';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          TextFormFieldWidget(
-                            textInputType: TextInputType.number,
-                            controller: priceController,
-                            label: 'Price',
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter value for Price';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          DropdownButtonFormFieldWidget<int>(
-                            selectedValue: discountTypes,
-                            hint: 'Discount Type',
-                            items: const [
-                              DropdownMenuItem<int>(
-                                value: 0,
-                                child: Text('Persentage %'),
-                              ),
-                              DropdownMenuItem<int>(
-                                value: 1,
-                                child: Text('Discount -'),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                discountTypes = value;
-                              });
-                            },
-                          ),
-                          if (discountTypes != null) const SizedBox(height: 10),
-                          if (discountTypes != null)
-                            TextFormFieldWidget(
-                              textInputType: TextInputType.number,
-                              controller: discountValueController,
-                              label: 'Discount Value',
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'please enter value for discount value';
-                                }
+          child: ListView(
+            padding: const EdgeInsetsDirectional.all(10),
+            children: [
+              TextFormFieldWidget(
+                textInputType: TextInputType.number,
+                controller: stockController,
+                label: 'Stock',
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter value for stock';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormFieldWidget(
+                textInputType: TextInputType.number,
+                controller: priceController,
+                label: 'Price',
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter value for Price';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              DropdownButtonFormFieldWidget<int>(
+                selectedValue: discountTypes,
+                hint: 'Discount Type',
+                items: const [
+                  DropdownMenuItem<int>(
+                    value: 0,
+                    child: Text('Persentage %'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 1,
+                    child: Text('Discount -'),
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    discountTypes = value;
+                  });
+                },
+              ),
+              if (discountTypes != null) const SizedBox(height: 10),
+              if (discountTypes != null)
+                TextFormFieldWidget(
+                  textInputType: TextInputType.number,
+                  controller: discountValueController,
+                  label: 'Discount Value',
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'please enter value for discount value';
+                    }
 
-                                return null;
-                              },
-                            ),
-                        ],
-                      ),
-                  ],
+                    return null;
+                  },
                 ),
+            ],
+          ),
         ),
         bottomNavigationBar: Builder(
           builder: (context) {
@@ -229,7 +163,6 @@ class _AddProductBranchScreenState extends State<AddProductBranchScreen> {
                           discountTypes: discountTypes,
                           discountValue:
                               double.tryParse(discountValueController.text),
-                          branchSubCategoryId: branchSubCategoryId!,
                         ),
                       );
                 },
