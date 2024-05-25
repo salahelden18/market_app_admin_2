@@ -18,7 +18,7 @@ class StatsItemWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: AppColors.fourthColor,
+          color: AppColors.primaryColor,
           borderRadius: BorderRadius.circular(10),
           boxShadow: const [
             BoxShadow(
@@ -36,14 +36,14 @@ class StatsItemWidget extends StatelessWidget {
             FittedBox(
               child: Text(
                 statisticsModel.name,
-                style: FontStyle.size22Black600,
+                style: FontStyle.size22Black600.copyWith(color: Colors.white),
                 maxLines: 1,
               ),
             ),
             const SizedBox(height: 10),
             Text(
               statisticsModel.count.toString(),
-              style: FontStyle.size22Black600,
+              style: FontStyle.size22Black600.copyWith(color: Colors.white),
             ),
           ],
         ),
