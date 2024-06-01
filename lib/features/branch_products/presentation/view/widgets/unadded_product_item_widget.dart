@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:market_app_web_2/features/branch_products/presentation/model_view/cubit/branch_products_cubit.dart';
 import 'package:market_app_web_2/features/branch_products/presentation/model_view/unadded_products_cubit/unadded_products_cubit.dart';
 import '../../../../../core/style/font_style.dart';
 import '../../../data/models/unadded_product_model.dart';
@@ -12,10 +13,16 @@ class UnAddedProductItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final branchProducts =
+        ModalRoute.of(context)!.settings.arguments as BranchProductsCubit;
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, AddProductBranchScreen.routeName,
-            arguments: [model.id, context.read<UnAddedProductsCubit>()]);
+            arguments: [
+              model.id,
+              context.read<UnAddedProductsCubit>(),
+              branchProducts
+            ]);
       },
       child: Container(
         padding: const EdgeInsets.all(10),

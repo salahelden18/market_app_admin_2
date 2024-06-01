@@ -78,4 +78,16 @@ class BranchProductsCubit extends Cubit<BranchProductsStates> {
       },
     );
   }
+
+  addBranchProduct(BranchProductModel branchProductModel) {
+    if (state is BranchProductsSuccessState) {
+      branchProducts = List<BranchProductModel>.from(branchProducts)
+        ..add(branchProductModel);
+
+      PaginationModel paginationModel =
+          (state as BranchProductsSuccessState).paginationModel;
+
+      emit(BranchProductsSuccessState(branchProducts, paginationModel));
+    }
+  }
 }

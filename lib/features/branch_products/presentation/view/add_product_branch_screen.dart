@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:market_app_web_2/features/branch_products/presentation/model_view/cubit/branch_products_cubit.dart';
 import '../../data/models/add_branch_product_model.dart';
 import '../model_view/unadded_products_cubit/unadded_products_cubit.dart';
 import '../../../../core/utils/show_toast.dart';
@@ -32,6 +33,7 @@ class _AddProductBranchScreenState extends State<AddProductBranchScreen> {
   bool isExecuted = false;
   late String productId;
   late UnAddedProductsCubit unAddedProductsCubit;
+  late BranchProductsCubit branchProductsCubit;
 
   @override
   void didChangeDependencies() {
@@ -42,6 +44,7 @@ class _AddProductBranchScreenState extends State<AddProductBranchScreen> {
 
       productId = data[0];
       unAddedProductsCubit = data[1];
+      branchProductsCubit = data[2];
       isExecuted = true;
     }
   }
@@ -60,6 +63,7 @@ class _AddProductBranchScreenState extends State<AddProductBranchScreen> {
       providers: [
         BlocProvider(create: (ctx) => AddBranchProductCubit(sl())),
         BlocProvider.value(value: unAddedProductsCubit),
+        BlocProvider.value(value: branchProductsCubit),
       ],
       child: Scaffold(
         appBar: AppBar(title: const Text('Add Branch Product')),
@@ -139,6 +143,9 @@ class _AddProductBranchScreenState extends State<AddProductBranchScreen> {
                   context
                       .read<UnAddedProductsCubit>()
                       .hideProduct(state.branchProductModel.product!.id);
+                  context
+                      .read<BranchProductsCubit>()
+                      .addBranchProduct(state.branchProductModel);
                   Navigator.pop(context);
                 } else if (state is AddBranchProductFailureState) {
                   DialogManagerOverlay.closeDialog();

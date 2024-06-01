@@ -48,6 +48,7 @@ class SubCategorySection extends StatelessWidget {
                   : Wrap(
                       alignment: WrapAlignment.center,
                       spacing: 20,
+                      runSpacing: 20,
                       children: state.subCategory
                           .map(
                             (e) => SubcategoryItemWidget(
